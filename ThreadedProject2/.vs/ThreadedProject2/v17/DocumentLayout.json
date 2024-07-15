@@ -1,0 +1,138 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|c:\\users\\gmoia\\source\\repos\\threadedproject2\\threadedproject2\\helpers\\dbget.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|solutionrelative:threadedproject2\\helpers\\dbget.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|c:\\users\\gmoia\\source\\repos\\threadedproject2\\threadedproject2\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|solutionrelative:threadedproject2\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|c:\\users\\gmoia\\source\\repos\\threadedproject2\\threadedproject2\\addedititems\\addeditpackage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|solutionrelative:threadedproject2\\addedititems\\addeditpackage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|c:\\users\\gmoia\\source\\repos\\threadedproject2\\threadedproject2\\helpers\\validation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|solutionrelative:threadedproject2\\helpers\\validation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|c:\\users\\gmoia\\source\\repos\\threadedproject2\\threadedproject2\\addedititems\\addeditpackage.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|solutionrelative:threadedproject2\\addedititems\\addeditpackage.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|c:\\users\\gmoia\\source\\repos\\threadedproject2\\threadedproject2\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|solutionrelative:threadedproject2\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|c:\\users\\gmoia\\source\\repos\\threadedproject2\\threadedproject2\\addedititems\\addeditpackage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{0104AA9C-F40D-4ACE-AA58-E082410A7882}|ThreadedProject2\\ThreadedProject2.csproj|solutionrelative:threadedproject2\\addedititems\\addeditpackage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\Form1.cs",
+              "RelativeDocumentMoniker": "ThreadedProject2\\Form1.cs",
+              "ToolTip": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\Form1.cs",
+              "RelativeToolTip": "ThreadedProject2\\Form1.cs",
+              "ViewState": "AQIAAC0AAAAAAAAAAAAawPYAAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-15T16:42:56.11Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AddEditPackage.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\AddEditItems\\AddEditPackage.Designer.cs",
+              "RelativeDocumentMoniker": "ThreadedProject2\\AddEditItems\\AddEditPackage.Designer.cs",
+              "ToolTip": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\AddEditItems\\AddEditPackage.Designer.cs",
+              "RelativeToolTip": "ThreadedProject2\\AddEditItems\\AddEditPackage.Designer.cs",
+              "ViewState": "AQIAAM4AAAAAAAAAAAAUwNYAAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-15T18:17:08.921Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Validation.cs",
+              "DocumentMoniker": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\Helpers\\Validation.cs",
+              "RelativeDocumentMoniker": "ThreadedProject2\\Helpers\\Validation.cs",
+              "ToolTip": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\Helpers\\Validation.cs",
+              "RelativeToolTip": "ThreadedProject2\\Helpers\\Validation.cs",
+              "ViewState": "AQIAAEgAAAAAAAAAAAAtwFkAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-15T17:18:57.242Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DbGet.cs",
+              "DocumentMoniker": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\Helpers\\DbGet.cs",
+              "RelativeDocumentMoniker": "ThreadedProject2\\Helpers\\DbGet.cs",
+              "ToolTip": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\Helpers\\DbGet.cs",
+              "RelativeToolTip": "ThreadedProject2\\Helpers\\DbGet.cs",
+              "ViewState": "AQIAAF0AAAAAAAAAAAAAAF8AAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-15T16:52:14.315Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AddEditPackage.cs",
+              "DocumentMoniker": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\AddEditItems\\AddEditPackage.cs",
+              "RelativeDocumentMoniker": "ThreadedProject2\\AddEditItems\\AddEditPackage.cs",
+              "ToolTip": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\AddEditItems\\AddEditPackage.cs",
+              "RelativeToolTip": "ThreadedProject2\\AddEditItems\\AddEditPackage.cs",
+              "ViewState": "AQIAAEIAAAAAAAAAAAAawFkAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-15T16:44:31.453Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\Form1.cs",
+              "RelativeDocumentMoniker": "ThreadedProject2\\Form1.cs",
+              "ToolTip": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\Form1.cs [Design]",
+              "RelativeToolTip": "ThreadedProject2\\Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-15T16:42:53.441Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AddEditPackage.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\AddEditItems\\AddEditPackage.cs",
+              "RelativeDocumentMoniker": "ThreadedProject2\\AddEditItems\\AddEditPackage.cs",
+              "ToolTip": "C:\\Users\\gmoia\\source\\repos\\ThreadedProject2\\ThreadedProject2\\AddEditItems\\AddEditPackage.cs [Design]",
+              "RelativeToolTip": "ThreadedProject2\\AddEditItems\\AddEditPackage.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-15T16:41:40.894Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
