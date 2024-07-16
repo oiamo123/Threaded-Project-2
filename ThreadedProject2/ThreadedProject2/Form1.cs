@@ -19,36 +19,42 @@ namespace ThreadedProject2
         {
             InitializeComponent();
         }
-
+        // When form loads list packages
         private void Form1_Load(object sender, EventArgs e)
         {
             ListPackages(true);
         }
 
+        // When packages button is clicked, list Packages and disable buttons
         public void btnPackages_Click(object sender, EventArgs e)
         {
             ListPackages(true);
             disableButtons(false);
         }
 
+        // When products button is clicked, List products and disable buttons
         private void btnProducts_Click(object sender, EventArgs e)
         {
             ListProducts(true);
             disableButtons(false);
         }
 
+        // when Suppliers button is clicked, list suppliers and disable buttons
         private void btnSuppliers_Click(object sender, EventArgs e)
         {
             ListSuppliers(true);
             disableButtons(false);
         }
 
+        // when productssupliers button is clicked, list product suppliers and disable buttons
         private void btnProductSuppliers_Click(object sender, EventArgs e)
         {
             ListProductSuppliers(true);
             disableButtons(false);
         }
 
+        // List packages. Calls Update list box
+        // If bool is true, add's "packages" views list
         private void ListPackages(bool val)
         {
             if (val) views.Add("packages");
@@ -58,12 +64,16 @@ namespace ThreadedProject2
                 $"{"Agency Com.".PadRight(12)}", StringFormats.FormatPackages, dbGet.GetPackages());
         }
 
+        // List products. Calls Update list box
+        // If bool is true, add's "products" to views list
         private void ListProducts(bool val)
         {
             if (val) views.Add("products");
             UpdateListBox($"{"Id".PadRight(6)}Product Name", StringFormats.FormatProducts, dbGet.GetProducts());
         }
 
+        // List suppliers. Calls Update list box
+        // If bool is true, add's "suppliers" to views list
         private void ListSuppliers(bool val)
         {
             if (val) views.Add("suppliers");
@@ -71,42 +81,52 @@ namespace ThreadedProject2
 
         }
 
+        // Lists product suppliers. Calls Update list box
+        // If bool is true, add's "product suppliers" to views list
         private void ListProductSuppliers(bool val, int id = -1)
         {
             if (val) views.Add("product supplies");
             UpdateListBox($"{"Sup. Id".PadRight(8)}{"Product Id".PadRight(12)}{"Id".PadRight(6)}", StringFormats.FormatProductsSupplier, dbGet.GetProductSuppliers(id));
         }
 
+        // Lists Suppliers contacts. Calls Update list box
+        // If bool is true, add's "supplier contacts" to views list
         private void ListSupplierContact(bool val, bool useLast = false)
         {
             if (val) views.Add("supplier contacts");
             UpdateListBox($"{"Id".PadRight(6)}{"First Name".PadRight(15)}{"LastName".PadRight(15)}{"Email".PadRight(33)}{"Fax".PadRight(12)}{"Address".PadRight(50)}", StringFormats.FormatSupplierContacts, dbGet.GetSupplierContacts(lstData, useLast));
         }
 
+        // List packages product supplies. Calls Update list box
+        // If bool is true, add's "package product suppliers" to views list
         private void ListPackageProductSuppliers(bool val, bool useLast = false)
         {
             if (val) views.Add("package product supplies");
             UpdateListBox($"{"Sup. Id".PadRight(8)}{"Product Id".PadRight(12)}{"Id".PadRight(6)}", StringFormats.FormatProductsSupplier, dbGet.GetPackageProductSupplies(lstData, useLast));
         }
 
+        // disables/enables more, less, edit and remove buttons
         private void disableButtons(bool val)
         {
             enableMoreLess(val, val);
             enableEditRemove(val);
         }
 
+        // disables/enables more and less buttons
         private void enableMoreLess(bool val1, bool val2)
         {
             btnMore.Visible = val1;
             btnLess.Visible = val2;
         }
 
+        // disables / enables edit and remove buttons
         private void enableEditRemove(bool val)
         {
             btnEdit.Visible = val;
             btnRemove.Visible = val;
         }
 
+        // Checks what the current view is when List Box is clicked. Will show correct buttons based on view
         private void lstData_MouseClick(object sender, MouseEventArgs e)
         {
             if (lstData.SelectedItem != null)
@@ -125,9 +145,10 @@ namespace ThreadedProject2
             }
         }
 
+        // checks the view when more button is clicked to display correct data\
+        // checks to ensure first row is not selected
         private void btnMore_Click(object sender, EventArgs e)
         {
-            // if packages, product suppliers for that package
             try
             {
                 if (!int.TryParse(lstData.SelectedItem.ToString().Substring(0, 6).TrimEnd(), out int val)) throw new Exception("First row cannot be selected");
@@ -149,6 +170,8 @@ namespace ThreadedProject2
             Debug.WriteLine(views);
         }
 
+        // when button less is clicked, remove last view from views list.
+        // Lists correct data based on last item in views list
         private void btnLess_Click(object sender, EventArgs e)
         {
             if (views.Count() > 1) views.Remove(views.Last());
@@ -170,14 +193,10 @@ namespace ThreadedProject2
             {
                 ListPackageProductSuppliers(false, true);
             }
-            Debug.WriteLine(views);
         }
 
-        private void clearListBox()
-        {
-            lstData.Items.Clear();
-        }
-
+        // When remove button is clicked, check the current view, get id,
+        // query correct model, remove item and relist appropriate data
         private void btnRemove_Click(object sender, EventArgs e)
         {
             DialogResult res = MessageBox.Show("Are you sure you would like to remove this?", "Remove item", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -221,6 +240,8 @@ namespace ThreadedProject2
             }
         }
 
+        // when button add is clicked, check view to open correct dialog.
+        // list appropriate data once it is clicked
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (views.Last() == "packages")
@@ -242,6 +263,8 @@ namespace ThreadedProject2
             }
         }
 
+        // When edit button is clicked, check view, open appropriate form,
+        // and then relist appropriate data after item has been edited.
         private void btnEdit_Click(object sender, EventArgs e)
         {
             try
@@ -273,6 +296,16 @@ namespace ThreadedProject2
             
         }
 
+        // clears list box
+        private void clearListBox()
+        {
+            lstData.Items.Clear();
+        }
+
+        // Updates list box. 
+        // string head: string for first row/ description
+        // FormatItemDelegate: Method gets passed in to format data. Check StringFormats in Helpers to see formats
+        // list: takes a list ie Packages
         private void UpdateListBox<T>(string head, FormatItemDelegate<T> formatBody, List<T> list)
         {
             clearListBox();
