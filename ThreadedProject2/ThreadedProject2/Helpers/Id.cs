@@ -9,6 +9,11 @@ namespace ThreadedProject2.Helpers
 {
     internal class Id
     {
+        /// <summary>
+        /// Get's id ListBox lstData
+        /// </summary>
+        /// <param name="lstData">Used to create a substring from the selected item and parse</param>
+        /// <returns></returns>
         static public int GetId(ListBox lstData)
         {
             int id = 0;

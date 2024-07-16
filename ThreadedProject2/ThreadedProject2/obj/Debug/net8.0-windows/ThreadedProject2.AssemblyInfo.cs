@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ThreadedProject2")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bf6b2b69d57bfb22be04c71ee11463210d1bf39f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fdaccabc4bf0e7ab76646c27477d861d4de27834")]
 [assembly: System.Reflection.AssemblyProductAttribute("ThreadedProject2")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ThreadedProject2")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

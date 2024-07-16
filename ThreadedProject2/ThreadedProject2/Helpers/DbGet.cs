@@ -14,6 +14,11 @@ namespace ThreadedProject2.Helpers
         int supLastId = 0;
         int packProdLastId = 0;
 
+        /// <summary>
+        /// Get packages
+        /// </summary>
+        /// <param name="id">Optional id parameter to query by PackageId</param>
+        /// <returns></returns>
         public List<Models.Package> GetPackages(int id = -1)
         {
             using (Models.TravelExpertsContext context = new TravelExpertsContext())
@@ -31,6 +36,11 @@ namespace ThreadedProject2.Helpers
             }
         }
 
+        /// <summary>
+        /// Get products
+        /// </summary>
+        /// <param name="id">Optional id parameter to query by ProductId</param>
+        /// <returns></returns>
         public List<Product> GetProducts(int id = -1)
         {
             using (Models.TravelExpertsContext context = new TravelExpertsContext())
@@ -48,6 +58,11 @@ namespace ThreadedProject2.Helpers
             } 
         }
 
+        /// <summary>
+        /// Get Suppliers
+        /// </summary>
+        /// <param name="id">Optional id parameter to query by supplier id</param>
+        /// <returns></returns>
         public List<Supplier> GetSuppliers(int id = -1)
         {
             using (Models.TravelExpertsContext context = new TravelExpertsContext())
@@ -65,6 +80,11 @@ namespace ThreadedProject2.Helpers
             } 
         }
 
+        /// <summary>
+        /// Get Product suppliers
+        /// </summary>
+        /// <param name="id">Optional id parameter to query by productid</param>
+        /// <returns></returns>
         public List<ProductsSupplier> GetProductSuppliers(int id = -1)
         {
             using (Models.TravelExpertsContext context = new TravelExpertsContext())
@@ -82,6 +102,12 @@ namespace ThreadedProject2.Helpers
             }    
         }
 
+        /// <summary>
+        /// Get Supplier contacts
+        /// </summary>
+        /// <param name="lstData">ListBox lstdata to get supplier id</param>
+        /// <param name="useLast">To show all supplier contacts, false, else to reference only previous supplier, true reference the id of the previous menu selection</param>
+        /// <returns></returns>
         public List<SupplierContact> GetSupplierContacts(ListBox lstData, bool useLast = false)
         {
             using (Models.TravelExpertsContext context = new TravelExpertsContext())
@@ -92,6 +118,12 @@ namespace ThreadedProject2.Helpers
             }
         }
 
+        /// <summary>
+        /// Get package product suppliers
+        /// </summary>
+        /// <param name="lstData">Listbox lstdata to get Package ID</param>
+        /// <param name="useLast">To show all Package product supplies, false, else to reference only previous package, true. references the id of the previous menu selection</param>
+        /// <returns></returns>
         public List<ProductsSupplier> GetPackageProductSupplies(ListBox lstData, bool useLast = false)
         {
             using (Models.TravelExpertsContext context = new TravelExpertsContext())

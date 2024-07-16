@@ -9,21 +9,44 @@ namespace ThreadedProject2
 {
     internal class StringFormats
     {
+        /// <summary>
+        /// Returns string for Products Suppliers
+        /// </summary>
+        /// <param name="p">ProductSupplier to create the string from</param>
+        /// <returns></returns>
         static public string FormatProductsSupplier(ProductsSupplier p)
         {
             return $"{p.SupplierId.ToString().PadRight(8)}" +
                 $"{p.ProductId.ToString().PadRight(12)}" +
                 $"{p.ProductSupplierId.ToString().PadRight(6)}";
         }
+
+        /// <summary>
+        /// Returns string for Products
+        /// </summary>
+        /// <param name="p">Product to create the string from</param>
+        /// <returns></returns>
         static public string FormatProducts(Product p)
         {
             return $"{p.ProductId.ToString().PadRight(6)}{p.ProdName}";
         }
+
+        /// <summary>
+        /// Returns string for Suppliers
+        /// </summary>
+        /// <param name="p">Supplier to create the string from</param>
+        /// <returns></returns>
         static public string FormatSuppliers(Supplier p)
         {
             return $"{p.SupplierId.ToString().PadRight(6)}" +
                 $"{char.ToUpper(p.SupName[0]) + p.SupName.Substring(1).ToLower()}";
         }
+
+        /// <summary>
+        /// Returns string for Packages
+        /// </summary>
+        /// <param name="p">Package to create the string from</param>
+        /// <returns></returns>
         static public string FormatPackages(Package p)
         {
             return $"{p.PackageId.ToString().PadRight(6)}{p.PkgName.PadRight(22)}{p.PkgStartDate.ToString("dd/MM/yyyy").PadRight(12)}" +
@@ -31,6 +54,12 @@ namespace ThreadedProject2
                     $"{Math.Round(p.PkgBasePrice, 2).ToString("c").PadRight(12)}" +
                     $"{Math.Round(p.PkgAgencyCommission, 2).ToString("c")}";
         }
+
+        /// <summary>
+        /// Returns string for Supplier Contacts
+        /// </summary>
+        /// <param name="i">SupplierContact to create the string from</param>
+        /// <returns></returns>
         static public string FormatSupplierContacts(SupplierContact i)
         {   
             

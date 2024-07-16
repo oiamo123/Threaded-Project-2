@@ -89,6 +89,12 @@ namespace ThreadedProject2
             return success;
         }
 
+        /// <summary>
+        /// Check's date to ensure it is not in the past
+        /// </summary>
+        /// <param name="dtp">DateTimePicker to compare the date to</param>
+        /// <param name="name">name ie "Date" for error messages</param>
+        /// <returns></returns>
         static public bool CheckDate(DateTimePicker dtp, string name)
         {
             bool success = true;
