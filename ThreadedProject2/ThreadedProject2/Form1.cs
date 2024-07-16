@@ -233,6 +233,13 @@ namespace ThreadedProject2
             {
 
             }
+            if (views.Last() == "suppliers")
+            {
+                SupplierAddModifyForm form = new SupplierAddModifyForm();
+                form.SetAddMode();
+                form.ShowDialog();
+                ListSuppliers(false);
+            }
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -249,6 +256,14 @@ namespace ThreadedProject2
                 if (views.Last() == "supplier contacts")
                 {
 
+                }
+                if(views.Last() == "suppliers")
+                {
+                    SupplierAddModifyForm form = new SupplierAddModifyForm();
+                    List<Supplier> s = dbGet.GetSuppliers();
+                    form.SetEditMode(s[lstData.SelectedIndex-1]);
+                    form.ShowDialog();
+                    ListSuppliers(false);
                 }
             }
             catch (Exception ex)

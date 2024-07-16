@@ -103,5 +103,115 @@ namespace ThreadedProject2
             }
             return success;
         }
+
+        /// <summary>
+        /// shows a message box and focuses on the invalid text box
+        /// </summary>
+        /// <param name="textBox"> text box to check (Tag property specifies meaning)</param>
+        /// <param name="message"> the message to show in the message box</param>
+        public static void ShowInvalidInput(TextBox textBox, string message)
+        {
+            MessageBox.Show(textBox.Tag + " " + message);
+            textBox.SelectAll();
+            textBox.Focus();
+        }
+
+        /// <summary>
+        /// checks if the text box contains a string other than ""
+        /// </summary>
+        /// <param name="textBox"> text box to check (Tag property specifies meaning)</param>
+        public static bool IsPresent(TextBox textBox)
+        {
+            if (textBox.Text == "")
+            {
+                ShowInvalidInput(textBox, "needs to be filled.");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        /// <summary>
+        /// checks if text box contains non-negative decimal
+        /// </summary>
+        /// <param name="textBox"> text box to check (Tag property specifies meaning)</param>
+        /// <returns>true if valid and false if not</returns>
+        public static bool IsNonNegativeDecimal(TextBox textBox)
+        {
+            if (IsPresent(textBox))
+            {
+                Decimal value;
+                if (Decimal.TryParse(textBox.Text, out value))
+                {
+                    if (value < 0)
+                    {
+                        ShowInvalidInput(textBox, "must not be negative.");
+                        return false;
+                    }
+                    return true;
+                }
+                else
+                {
+                    ShowInvalidInput(textBox, "must be a decimal number.");
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// checks if text box contains non-negative integer
+        /// </summary>
+        /// <param name="textBox"> text box to check (Tag property specifies meaning)</param>
+        /// <returns>true if valid and false if not</returns>
+        public static bool IsNonNegativeInteger(TextBox textBox)
+        {
+            if (IsPresent(textBox))
+            {
+                int value;
+                if (Int32.TryParse(textBox.Text, out value))
+                {
+                    if (value < 0)
+                    {
+                        ShowInvalidInput(textBox, "must not be negative.");
+                        return false;
+                    }
+                    return true;
+                }
+                else
+                {
+                    ShowInvalidInput(textBox, "must be a whole number.");
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// checks if text box contains a valid DateTime
+        /// </summary>
+        /// <param name="textBox"> text box to check (Tag property specifies meaning)</param>
+        /// <returns>true if valid and false if not</returns>
+        public static bool IsDateTime(TextBox textBox)
+        {
+            if (IsPresent(textBox))
+            {
+                bool result = DateTime.TryParse(textBox.Text, out DateTime dtResult);
+                if (!result)
+                {
+                    ShowInvalidInput(textBox, "must be a valid date.");
+                }
+                return result;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
