@@ -8,14 +8,14 @@ using ThreadedProject2.Models;
 
 namespace ThreadedProject2
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         DbGet dbGet = new DbGet();
         Models.TravelExpertsContext context = new Models.TravelExpertsContext();
         public delegate string FormatItemDelegate<T>(T item);
         List<string> views = new List<string>();
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -244,6 +244,7 @@ namespace ThreadedProject2
         // list appropriate data once it is clicked
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            //TODO: Consider Switch statement
             if (views.Last() == "packages")
             {
                 Form form = new AddEditPackage();
@@ -261,6 +262,12 @@ namespace ThreadedProject2
                 form.ShowDialog();
                 ListSuppliers(false);
             }
+            if (views.Last() == "products")
+            {
+                Form form = new AddEditPackageProduct();
+                form.ShowDialog();
+                ListProducts(false);
+            }
         }
 
         // When edit button is clicked, check view, open appropriate form,
@@ -276,6 +283,21 @@ namespace ThreadedProject2
                     form.ShowDialog();
                     ListPackages(false);
                 }
+                if (views.Last() == "products")
+                {
+                    Form form = new AddEditPackageProduct(Id.GetId(lstData));
+                    form.ShowDialog();
+                    ListProducts(false);
+                }
+                if (views.Last() == "product supplies")
+                {
+                    Form form = new AddEditPackageProduct(Id.GetId(lstData));
+                    //TODO: Add this to second form to allow more dynamic editing
+                    // form.type = "product supplies";
+                    form.ShowDialog();
+                    ListProducts(false);
+                }
+                
                 if (views.Last() == "supplier contacts")
                 {
 
