@@ -32,6 +32,7 @@ namespace ThreadedProject2
                 MessageBox.Show(ex.Message);
                 success = false;
             }
+
             return success;
         }
 
@@ -49,7 +50,7 @@ namespace ThreadedProject2
                 // Checks if value is blank and that it contains only letters
                 Regex reg = new Regex("(^[a-zA-Z]+)$");
                 if (word == "") throw new Exception($"{name} code cannot be left empty");
-                if (!reg.IsMatch(word)) 
+                if (!reg.IsMatch(word))
                     throw new Exception($"{name} code is Invalid. Can only contain letters");
             }
             catch (Exception ex)
@@ -57,6 +58,7 @@ namespace ThreadedProject2
                 MessageBox.Show(ex.Message);
                 success = false;
             }
+
             return success;
         }
 
@@ -68,14 +70,14 @@ namespace ThreadedProject2
         /// <returns></returns>
         static public bool IsSentence(string str, string name)
         {
-            
             bool success = true;
             try
             {
                 // validates that sentence does not contain multiple spaces between words and has no numbers
                 Regex reg = new Regex("^([a-zA-Z]+\\s)*[a-zA-Z]+$");
                 if (str == "") throw new Exception($"{name} cannot be empty");
-                if (!reg.IsMatch(str.TrimEnd())) throw new Exception($"{name} is invalid. Can only contain letters and spaces!");
+                if (!reg.IsMatch(str.TrimEnd()))
+                    throw new Exception($"{name} is invalid. Can only contain letters and spaces!");
             }
             catch (System.FormatException)
             {
@@ -86,6 +88,7 @@ namespace ThreadedProject2
                 MessageBox.Show(ex.Message);
                 success = false;
             }
+
             return success;
         }
 
@@ -107,6 +110,7 @@ namespace ThreadedProject2
                 MessageBox.Show(ex.Message);
                 success = false;
             }
+
             return success;
         }
 
@@ -138,6 +142,7 @@ namespace ThreadedProject2
                 return true;
             }
         }
+
         /// <summary>
         /// checks if text box contains non-negative decimal
         /// </summary>
@@ -155,6 +160,7 @@ namespace ThreadedProject2
                         ShowInvalidInput(textBox, "must not be negative.");
                         return false;
                     }
+
                     return true;
                 }
                 else
@@ -168,6 +174,7 @@ namespace ThreadedProject2
                 return false;
             }
         }
+
         /// <summary>
         /// checks if text box contains non-negative integer
         /// </summary>
@@ -185,6 +192,7 @@ namespace ThreadedProject2
                         ShowInvalidInput(textBox, "must not be negative.");
                         return false;
                     }
+
                     return true;
                 }
                 else
@@ -198,6 +206,7 @@ namespace ThreadedProject2
                 return false;
             }
         }
+
         /// <summary>
         /// checks if text box contains a valid DateTime
         /// </summary>
@@ -212,12 +221,33 @@ namespace ThreadedProject2
                 {
                     ShowInvalidInput(textBox, "must be a valid date.");
                 }
+
                 return result;
             }
             else
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Checks if a textbox text length does not exceed the specified maximum length.
+        /// </summary>
+        /// <param name="textBox">Text box to check</param>
+        /// <param name="maxLength">Maximum allowed length</param>
+        /// <returns>true if valid and false if not</returns>
+        public static bool CheckLength(TextBox textBox, int maxLength)
+        {
+            bool isValid = true;
+            if (textBox.Text.Length > maxLength)
+            {
+                isValid = false;
+                MessageBox.Show($"{textBox.Tag} cannot exceed {maxLength} characters.");
+                textBox.SelectAll();
+                textBox.Focus();
+            }
+
+            return isValid;
         }
     }
 }

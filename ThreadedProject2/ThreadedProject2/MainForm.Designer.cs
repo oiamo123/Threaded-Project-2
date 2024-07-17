@@ -1,6 +1,6 @@
 ﻿namespace ThreadedProject2
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -44,20 +44,20 @@
             // 
             lstData.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lstData.FormattingEnabled = true;
-            lstData.ItemHeight = 22;
-            lstData.Location = new Point(17, 20);
-            lstData.Margin = new Padding(4, 5, 4, 5);
+            lstData.ItemHeight = 28;
+            lstData.Location = new Point(26, 23);
+            lstData.Margin = new Padding(6, 6, 6, 6);
             lstData.Name = "lstData";
-            lstData.Size = new Size(1228, 576);
+            lstData.Size = new Size(1840, 648);
             lstData.TabIndex = 0;
             lstData.MouseClick += lstData_MouseClick;
             // 
             // btnPackages
             // 
-            btnPackages.Location = new Point(1256, 20);
-            btnPackages.Margin = new Padding(4, 5, 4, 5);
+            btnPackages.Location = new Point(1884, 23);
+            btnPackages.Margin = new Padding(6, 6, 6, 6);
             btnPackages.Name = "btnPackages";
-            btnPackages.Size = new Size(151, 60);
+            btnPackages.Size = new Size(226, 70);
             btnPackages.TabIndex = 1;
             btnPackages.Text = "Packages";
             btnPackages.UseVisualStyleBackColor = true;
@@ -65,10 +65,10 @@
             // 
             // btnProducts
             // 
-            btnProducts.Location = new Point(1256, 90);
-            btnProducts.Margin = new Padding(4, 5, 4, 5);
+            btnProducts.Location = new Point(1884, 104);
+            btnProducts.Margin = new Padding(6, 6, 6, 6);
             btnProducts.Name = "btnProducts";
-            btnProducts.Size = new Size(151, 60);
+            btnProducts.Size = new Size(226, 70);
             btnProducts.TabIndex = 2;
             btnProducts.Text = "Products";
             btnProducts.UseVisualStyleBackColor = true;
@@ -76,10 +76,10 @@
             // 
             // btnSuppliers
             // 
-            btnSuppliers.Location = new Point(1256, 160);
-            btnSuppliers.Margin = new Padding(4, 5, 4, 5);
+            btnSuppliers.Location = new Point(1884, 186);
+            btnSuppliers.Margin = new Padding(6, 6, 6, 6);
             btnSuppliers.Name = "btnSuppliers";
-            btnSuppliers.Size = new Size(151, 60);
+            btnSuppliers.Size = new Size(226, 70);
             btnSuppliers.TabIndex = 3;
             btnSuppliers.Text = "Suppliers";
             btnSuppliers.UseVisualStyleBackColor = true;
@@ -87,10 +87,10 @@
             // 
             // btnProductSuppliers
             // 
-            btnProductSuppliers.Location = new Point(1256, 230);
-            btnProductSuppliers.Margin = new Padding(4, 5, 4, 5);
+            btnProductSuppliers.Location = new Point(1884, 267);
+            btnProductSuppliers.Margin = new Padding(6, 6, 6, 6);
             btnProductSuppliers.Name = "btnProductSuppliers";
-            btnProductSuppliers.Size = new Size(151, 60);
+            btnProductSuppliers.Size = new Size(226, 70);
             btnProductSuppliers.TabIndex = 4;
             btnProductSuppliers.Text = "Prod. Suppliers";
             btnProductSuppliers.UseVisualStyleBackColor = true;
@@ -98,10 +98,10 @@
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(17, 620);
-            btnAdd.Margin = new Padding(4, 5, 4, 5);
+            btnAdd.Location = new Point(26, 719);
+            btnAdd.Margin = new Padding(6, 6, 6, 6);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(151, 60);
+            btnAdd.Size = new Size(226, 70);
             btnAdd.TabIndex = 5;
             btnAdd.Text = "Add";
             btnAdd.UseVisualStyleBackColor = true;
@@ -109,10 +109,10 @@
             // 
             // btnEdit
             // 
-            btnEdit.Location = new Point(177, 620);
-            btnEdit.Margin = new Padding(4, 5, 4, 5);
+            btnEdit.Location = new Point(266, 719);
+            btnEdit.Margin = new Padding(6, 6, 6, 6);
             btnEdit.Name = "btnEdit";
-            btnEdit.Size = new Size(151, 60);
+            btnEdit.Size = new Size(226, 70);
             btnEdit.TabIndex = 6;
             btnEdit.Text = "Edit";
             btnEdit.UseVisualStyleBackColor = true;
@@ -121,10 +121,10 @@
             // 
             // btnRemove
             // 
-            btnRemove.Location = new Point(337, 620);
-            btnRemove.Margin = new Padding(4, 5, 4, 5);
+            btnRemove.Location = new Point(506, 719);
+            btnRemove.Margin = new Padding(6, 6, 6, 6);
             btnRemove.Name = "btnRemove";
-            btnRemove.Size = new Size(151, 60);
+            btnRemove.Size = new Size(226, 70);
             btnRemove.TabIndex = 7;
             btnRemove.Text = "Remove";
             btnRemove.UseVisualStyleBackColor = true;
@@ -133,10 +133,10 @@
             // 
             // btnMore
             // 
-            btnMore.Location = new Point(1253, 466);
-            btnMore.Margin = new Padding(4, 5, 4, 5);
+            btnMore.Location = new Point(1880, 541);
+            btnMore.Margin = new Padding(6, 6, 6, 6);
             btnMore.Name = "btnMore";
-            btnMore.Size = new Size(151, 60);
+            btnMore.Size = new Size(226, 70);
             btnMore.TabIndex = 8;
             btnMore.Text = ">>>";
             btnMore.UseVisualStyleBackColor = true;
@@ -145,21 +145,21 @@
             // 
             // btnLess
             // 
-            btnLess.Location = new Point(1253, 536);
-            btnLess.Margin = new Padding(4, 5, 4, 5);
+            btnLess.Location = new Point(1880, 622);
+            btnLess.Margin = new Padding(6, 6, 6, 6);
             btnLess.Name = "btnLess";
-            btnLess.Size = new Size(151, 60);
+            btnLess.Size = new Size(226, 70);
             btnLess.TabIndex = 9;
             btnLess.Text = "<<<";
             btnLess.UseVisualStyleBackColor = true;
             btnLess.Visible = false;
             btnLess.Click += btnLess_Click;
             // 
-            // Form1
+            // MainForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1424, 695);
+            AutoScaleDimensions = new SizeF(192F, 192F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            ClientSize = new Size(2136, 806);
             Controls.Add(btnLess);
             Controls.Add(btnMore);
             Controls.Add(btnRemove);
@@ -170,8 +170,9 @@
             Controls.Add(btnProducts);
             Controls.Add(btnPackages);
             Controls.Add(lstData);
-            Margin = new Padding(4, 5, 4, 5);
-            Name = "Form1";
+            Margin = new Padding(6, 6, 6, 6);
+            Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Agent Panel";
             Load += Form1_Load;
             ResumeLayout(false);
