@@ -28,6 +28,7 @@ namespace ThreadedProject2
         // When packages button is clicked, list Packages and disable buttons
         public void btnPackages_Click(object sender, EventArgs e)
         {
+            views.Clear();
             ListPackages(true);
             disableButtons(false);
         }
@@ -35,6 +36,7 @@ namespace ThreadedProject2
         // When products button is clicked, List products and disable buttons
         private void btnProducts_Click(object sender, EventArgs e)
         {
+            views.Clear();
             ListProducts(true);
             disableButtons(false);
         }
@@ -42,6 +44,7 @@ namespace ThreadedProject2
         // when Suppliers button is clicked, list suppliers and disable buttons
         private void btnSuppliers_Click(object sender, EventArgs e)
         {
+            views.Clear();
             ListSuppliers(true);
             disableButtons(false);
         }
@@ -49,6 +52,7 @@ namespace ThreadedProject2
         // when productssupliers button is clicked, list product suppliers and disable buttons
         private void btnProductSuppliers_Click(object sender, EventArgs e)
         {
+            views.Clear();
             ListProductSuppliers(true);
             disableButtons(false);
         }
@@ -94,7 +98,7 @@ namespace ThreadedProject2
         private void ListSupplierContact(bool val, bool useLast = false)
         {
             if (val) views.Add("supplier contacts");
-            UpdateListBox($"{"Id".PadRight(6)}{"First Name".PadRight(15)}{"LastName".PadRight(15)}{"Email".PadRight(33)}{"Fax".PadRight(12)}{"Address".PadRight(50)}", StringFormats.FormatSupplierContacts, dbGet.GetSupplierContacts(lstData, useLast));
+            UpdateListBox($"{"Id".PadRight(6)}{"First Name".PadRight(15)}{"LastName".PadRight(15)}{"Email".PadRight(33)}{"Fax".PadRight(12)}{"Address".PadRight(50)}", StringFormats.FormatSupplierContacts, dbGet.GetSupplierContacts(Id.GetId(lstData), useLast));
         }
 
         // List packages product supplies. Calls Update list box
@@ -173,7 +177,7 @@ namespace ThreadedProject2
         // when button less is clicked, remove last view from views list.
         // Lists correct data based on last item in views list
         private void btnLess_Click(object sender, EventArgs e)
-        {
+        { 
             if (views.Count() > 1) views.Remove(views.Last());
             enableEditRemove(false);
             enableMoreLess(false, true);
@@ -218,8 +222,61 @@ namespace ThreadedProject2
                 }
                 if (views.Last().Equals("suppliers"))
                 {
+                    DialogResult supRes = DialogResult.None;
+
+                    // get supplier
                     Supplier supplier = dbGet.GetSuppliers(Id.GetId(lstData)).FirstOrDefault();
-                    context.Suppliers.Remove(supplier);
+
+                    // get supplier contacts
+                    List<SupplierContact> supplierContacts = context.SupplierContacts.Where(p => p.SupplierId == supplier.SupplierId).ToList();
+
+                    // get all products suppliers with same supplierid
+                    List<ProductsSupplier> productSupplies = context.ProductsSuppliers.Where(p => p.SupplierId == supplier.SupplierId).ToList();
+
+                    // If Supplier contacts count > 0, confirm removal
+                    string warningMessage = "Are you sure you want to continue?";
+                    if (supplierContacts.Count != 0 || productSupplies.Count() != 0)
+                    {
+                        if (supplierContacts.Count != 0) warningMessage += " This will also remove all associated contacts.";
+                        if (productSupplies.Count() != 0) warningMessage += " This contact is assosciated with a packages product supplies.";
+
+                        supRes = MessageBox.Show(warningMessage, "Remove Supplier", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        supRes = DialogResult.OK;
+                    }
+
+                    // get product supplies from packages
+                    var packageProductSupplies = context.Packages.Include(p => p.ProductSuppliers.Where(p => p.SupplierId == supplier.SupplierId));
+
+                    // remove product supplies from package
+                    foreach (var package in packageProductSupplies)
+                    {
+                        foreach (var productsupply in productSupplies)
+                        {
+                            // remove product suppliers from package and from product supplies
+                            package.ProductSuppliers.Remove(productsupply);
+                            context.ProductsSuppliers.Remove(productsupply);
+                        }
+                    }
+
+                    // remove product supplies from packages
+                    foreach (var productsupply in productSupplies)
+                    {
+                        foreach (var package in context.Packages)
+                            productsupply.Packages.Remove(package);
+                    }
+
+                    // remove supplier contacts from supplier
+                    foreach(var contact in supplierContacts)
+                    {
+                        context.SupplierContacts.Remove(contact);
+                    }
+
+                    // remove supplier
+                    context.Remove(supplier);
+
                     context.SaveChanges();
                     ListSuppliers(false);
                 }

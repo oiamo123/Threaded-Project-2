@@ -108,13 +108,12 @@ namespace ThreadedProject2.Helpers
         /// <param name="lstData">ListBox lstdata to get supplier id</param>
         /// <param name="useLast">To show all supplier contacts, false, else to reference only previous supplier, true reference the id of the previous menu selection</param>
         /// <returns></returns>
-        public List<SupplierContact> GetSupplierContacts(ListBox lstData, bool useLast = false)
+        public List<SupplierContact> GetSupplierContacts(int id, bool useLast = false)
         {
             using (Models.TravelExpertsContext context = new TravelExpertsContext())
             {
-                int supId = Id.GetId(lstData);
-                if (!useLast) supLastId = supId;
-                return context.SupplierContacts.Where(p => p.SupplierId == (useLast ? supLastId : supId)).ToList();
+                if (!useLast) supLastId = id;
+                return context.SupplierContacts.Where(p => p.SupplierId == (useLast ? supLastId : id)).ToList();
             }
         }
 
@@ -136,6 +135,7 @@ namespace ThreadedProject2.Helpers
                 var package = context.Packages
                                  .Include(p => p.ProductSuppliers)
                                  .SingleOrDefault(p => p.PackageId == (useLast ? packProdLastId : Id.GetId(lstData)));
+
                 return package.ProductSuppliers.ToList();
             }
                 

@@ -9,7 +9,6 @@ namespace ThreadedProject2.Models
 {
     internal class SupplierDB
     {
-
         public static List<Supplier> GetSuppliers()
         {
             using (TravelExpertsContext db = new TravelExpertsContext())

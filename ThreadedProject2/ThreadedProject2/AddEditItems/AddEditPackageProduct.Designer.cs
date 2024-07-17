@@ -31,14 +31,14 @@
             btnExit = new Button();
             btnAccept = new Button();
             groupBox1 = new GroupBox();
+            textBox2 = new TextBox();
+            textBox1 = new TextBox();
             btnNewProduct = new Button();
             btnNewSupplier = new Button();
+            comboBox1 = new ComboBox();
             comboBox2 = new ComboBox();
             label2 = new Label();
             label1 = new Label();
-            comboBox1 = new ComboBox();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -84,6 +84,20 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Product Details";
             // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(153, 104);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(273, 39);
+            textBox2.TabIndex = 18;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(153, 57);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(273, 39);
+            textBox1.TabIndex = 17;
+            // 
             // btnNewProduct
             // 
             btnNewProduct.Font = new Font("Segoe UI", 12F);
@@ -107,6 +121,15 @@
             btnNewSupplier.Text = "Other";
             btnNewSupplier.UseVisualStyleBackColor = true;
             btnNewSupplier.Visible = false;
+            // 
+            // comboBox1
+            // 
+            comboBox1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(153, 57);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(273, 40);
+            comboBox1.TabIndex = 0;
             // 
             // comboBox2
             // 
@@ -136,29 +159,6 @@
             label1.Size = new Size(101, 32);
             label1.TabIndex = 1;
             label1.Text = "Product:";
-            // 
-            // comboBox1
-            // 
-            comboBox1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(153, 57);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(273, 40);
-            comboBox1.TabIndex = 0;
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(153, 58);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(273, 39);
-            textBox1.TabIndex = 17;
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(153, 104);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(273, 39);
-            textBox2.TabIndex = 18;
             // 
             // AddEditPackageProduct
             // 
