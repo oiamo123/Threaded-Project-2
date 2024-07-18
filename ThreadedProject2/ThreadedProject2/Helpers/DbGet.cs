@@ -96,7 +96,7 @@ namespace ThreadedProject2.Helpers
                 }
                 else
                 {
-                    var prodSuppliers = context.ProductsSuppliers.Where(p => p.ProductId == id);
+                    var prodSuppliers = context.ProductsSuppliers.Where(p => p.ProductSupplierId == id);
                     return prodSuppliers.ToList();
                 }
             }    
