@@ -11,13 +11,16 @@ namespace ThreadedProject2
     public partial class MainForm : Form
     {
         Models.TravelExpertsContext context = new Models.TravelExpertsContext();
+
         public delegate string FormatItemDelegate<T>(T item);
+
         List<string> views = new List<string>();
 
         public MainForm()
         {
             InitializeComponent();
         }
+
         // When form loads list packages
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -162,6 +165,7 @@ namespace ThreadedProject2
                 {
                     ListSupplierContact(true);
                 }
+
                 enableEditRemove(false);
                 enableMoreLess(false, true);
             }
@@ -169,6 +173,7 @@ namespace ThreadedProject2
             {
                 MessageBox.Show(ex.Message);
             }
+
             Debug.WriteLine(views);
         }
 
@@ -212,6 +217,7 @@ namespace ThreadedProject2
 
                     ListPackages(false);
                 }
+
                 if (views.Last().Equals("products"))
                 {
                     DialogResult prodRes = DialogResult.None;
@@ -245,6 +251,7 @@ namespace ThreadedProject2
 
                     ListProducts(false);
                 }
+
                 if (views.Last().Equals("suppliers"))
                 {
                     DialogResult supRes = DialogResult.None;
@@ -292,6 +299,7 @@ namespace ThreadedProject2
                         ListSuppliers(false);
                     }
                 }
+
                 if (views.Last().Equals("product supplies"))
                 {
                     // get product supplier
@@ -340,33 +348,60 @@ namespace ThreadedProject2
             }
         }
 
+        // String array of views/Types
+        public static readonly string[] Types =
+            ["Product", "Supplier", "Product Supplier", "Supplier Contact", "Package"];
+
+        // Default value indicating no selection
+        private int mainId = -1;
+
         // when button add is clicked, check view to open correct dialog.
         // list appropriate data once it is clicked
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            //TODO: Consider Switch statement
-            if (views.Last() == "packages")
+            switch (views.Last())
             {
-                Form form = new AddEditPackage();
-                form.ShowDialog();
-                ListPackages(false);
-            }
-            if (views.Last() == "supplier contacts")
-            {
-
-            }
-            if (views.Last() == "suppliers")
-            {
-                SupplierAddModifyForm form = new SupplierAddModifyForm();
-                form.SetAddMode();
-                form.ShowDialog();
-                ListSuppliers(false);
-            }
-            if (views.Last() == "products" || views.Last() == "product supplies" || views.Last() == "package product supplies")
-            {
-                Form form = new AddEditPackageProduct(Id.GetId(lstData));
-                form.ShowDialog();
-                ListProducts(false);
+                case "packages":
+                {
+                    Form form = new AddEditPackage();
+                    form.ShowDialog();
+                    ListPackages(false);
+                    break;
+                }
+                case "supplier contacts":
+                    break;
+                case "suppliers":
+                {
+                    SupplierAddModifyForm form = new SupplierAddModifyForm();
+                    form.SetAddMode();
+                    form.ShowDialog();
+                    ListSuppliers(false);
+                    break;
+                }
+                //If using AddEditPackageProduct
+                //Using Erin Form^^
+                // if (views.Last() == "suppliers")
+                // {
+                //     //set type to main form
+                //     AddEditPackageProduct form = new AddEditPackageProduct(Types[1], mainId);
+                //     form.ShowDialog();
+                //     ListProducts(false);
+                // }
+                case "products":
+                {
+                    //set type to main form
+                    AddEditPackageProduct form = new AddEditPackageProduct(Types[0], mainId);
+                    form.ShowDialog();
+                    ListProducts(false);
+                    break;
+                }
+                case "product supplies":
+                {
+                    AddEditPackageProduct form = new AddEditPackageProduct(Types[2], mainId);
+                    form.ShowDialog();
+                    ListProductSuppliers(false);
+                    break;
+                }
             }
         }
 
@@ -383,26 +418,26 @@ namespace ThreadedProject2
                     form.ShowDialog();
                     ListPackages(false);
                 }
+
                 if (views.Last() == "products")
                 {
-                    Form form = new AddEditPackageProduct(Id.GetId(lstData));
+                    AddEditPackageProduct form = new AddEditPackageProduct(Types[0], Id.GetId(lstData));
                     form.ShowDialog();
                     ListProducts(false);
                 }
+
                 if (views.Last() == "product supplies")
                 {
-                    Form form = new AddEditPackageProduct(Id.GetId(lstData));
-                    //TODO: Add this to second form to allow more dynamic editing
-                    // form.type = "product supplies";
+                    AddEditPackageProduct form = new AddEditPackageProduct(Types[2], Id.GetId(lstData));
                     form.ShowDialog();
-                    ListProducts(false);
+                    ListProductSuppliers(false);
                 }
-                
+
                 if (views.Last() == "supplier contacts")
                 {
-
                 }
-                if(views.Last() == "suppliers")
+
+                if (views.Last() == "suppliers")
                 {
                     SupplierAddModifyForm form = new SupplierAddModifyForm();
                     List<Supplier> s = DB.Get.Suppliers();
@@ -415,7 +450,6 @@ namespace ThreadedProject2
             {
                 MessageBox.Show(ex.Message);
             }
-            
         }
 
         // clears list box

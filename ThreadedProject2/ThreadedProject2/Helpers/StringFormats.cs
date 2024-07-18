@@ -65,8 +65,7 @@ namespace ThreadedProject2
         /// <param name="i">SupplierContact to create the string from</param>
         /// <returns></returns>
         static public string FormatSupplierContacts(SupplierContact i)
-        {   
-            
+        {
             return $"{i.SupplierContactId.ToString().PadRight(6)}" +
                 $"{(i.SupConFirstName ??= "Unavailable").PadRight(15)}" +
                 $"{(i.SupConLastName ??= "Unavailable").PadRight(15)}" +
