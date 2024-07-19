@@ -182,29 +182,23 @@ namespace ThreadedProject2
         /// <returns>true if valid and false if not</returns>
         public static bool IsNonNegativeInteger(TextBox textBox)
         {
-            if (IsPresent(textBox))
+            bool isValid = true;
+            if (!int.TryParse(textBox.Text, out int value)) // bad int
             {
-                int value;
-                if (Int32.TryParse(textBox.Text, out value))
-                {
-                    if (value < 0)
-                    {
-                        ShowInvalidInput(textBox, "must not be negative.");
-                        return false;
-                    }
+                isValid = false;
+                MessageBox.Show($@"{textBox.Tag} has to be a whole number");
+                textBox.SelectAll();
+                textBox.Focus();
+            }
+            else if (value < 0) // negative
+            {
+                isValid = false;
+                MessageBox.Show($@"{textBox.Tag} must be positive or zero");
+                textBox.SelectAll();
+                textBox.Focus();
+            }
 
-                    return true;
-                }
-                else
-                {
-                    ShowInvalidInput(textBox, "must be a whole number.");
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            return isValid;
         }
 
         /// <summary>

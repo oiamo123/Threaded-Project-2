@@ -41,6 +41,9 @@ namespace ThreadedProject2
         {
             //set selectedItem of data to modify form
             this.selectedItemId = selectedItem;
+            //set form legend aka groupbox
+            grbDetails.Text = $@"{formType} Details";
+
             //Set text of form based on selectedItem
             if (selectedItem == -1)
             {
@@ -83,6 +86,10 @@ namespace ThreadedProject2
             txtProduct.Visible = false;
             txtSupplier.Enabled = false;
             txtSupplier.Visible = false;
+            lblSupplierID.Enabled = false;
+            lblSupplierID.Visible = false;
+            txtSupplierID.Enabled = false;
+            txtSupplierID.Visible = false;
 
             // Disable and hide buttons for adding new Product and Supplier
             // btnNewProduct.Enabled = false;
@@ -99,10 +106,14 @@ namespace ThreadedProject2
             // Disable and hide controls related to Supplier
             lblSupplier.Enabled = false;
             lblSupplier.Visible = false;
+            lblSupplierID.Enabled = false;
+            lblSupplierID.Visible = false;
             cboSupplier.Enabled = false;
             cboSupplier.Visible = false;
             txtSupplier.Enabled = false;
             txtSupplier.Visible = false;
+            txtSupplierID.Enabled = false;
+            txtSupplierID.Visible = false;
             btnNewSupplier.Enabled = false;
             btnNewSupplier.Visible = false;
 
@@ -161,6 +172,8 @@ namespace ThreadedProject2
                         {
                             Supplier? supplier = DB.Get.Suppliers(selectedItemId).FirstOrDefault();
                             txtSupplier.Text = supplier?.SupName;
+                            txtSupplierID.Text = supplier?.SupplierId.ToString();
+                            txtSupplierID.ReadOnly = true;
                             break;
                         }
 
@@ -190,7 +203,7 @@ namespace ThreadedProject2
                         }
                     }
                 }
-                //When Adding and cbo controls are enables
+                //When Adding and cbo controls are enables(Still loads even when not displayed??)
                 else
                 {
                     var products = DB.Get.Products();
@@ -215,7 +228,8 @@ namespace ThreadedProject2
         {
             try
             {
-                if (isValid())
+                //Check if fields are valid BASED on FormType
+                if (isValid(FormType))
                 {
                     switch (FormType)
                     {
@@ -290,7 +304,8 @@ namespace ThreadedProject2
                 // Create a new supplier object with the name from the text box
                 Supplier supplier = new Supplier
                 {
-                    SupName = txtSupplier.Text
+                    SupName = txtSupplier.Text,
+                    SupplierId = int.Parse(txtSupplierID.Text)
                 };
 
                 // Add the supplier to the context
@@ -315,6 +330,9 @@ namespace ThreadedProject2
 
                 // Update the supplier name with the text from the textbox
                 supplier.SupName = txtSupplier.Text;
+
+                // Update the supplier ID with the text from the textbox
+                supplier.SupplierId = int.Parse(txtSupplierID.Text);
 
                 // Save the changes to the context
                 context.SaveChanges();
@@ -383,14 +401,15 @@ namespace ThreadedProject2
         /// <summary>
         /// Validates the data in the text fields
         /// </summary>
+        /// <param name="formType"></param>
         /// <returns>True if all the data is valid, false otherwise</returns>
-        private bool isValid()
+        private bool isValid(string formType)
         {
             bool success = true;
 
             try
             {
-                switch (FormType)
+                switch (formType)
                 {
                     case "Product":
                         // Check if the product name is a valid sentence and within the specified length
@@ -404,9 +423,11 @@ namespace ThreadedProject2
                         break;
                     case "Supplier":
                         // Check if the supplier name is a valid sentence and within the specified length
-                        if (!Validation.IsSentence(txtSupplier.Text, "Supplier") ||
+                        if (!Validation.IsPresent(txtSupplier) ||
+                            !Validation.IsSentence(txtSupplier.Text, "Supplier") ||
                             !Validation.CheckLength(txtSupplier, 255) ||
-                            !Validation.IsPresent(txtSupplier))
+                            !Validation.IsPresent(txtSupplierID) ||
+                            !Validation.IsNonNegativeInteger(txtSupplierID))
                         {
                             success = false;
                         }
@@ -443,7 +464,6 @@ namespace ThreadedProject2
             }
         }
 
-        //TODO:FUNCTIONALITY NOT COMPLETE
         private void btnNewSupplier_Click(object sender, EventArgs e)
         {
             AddEditPackageProduct form = new AddEditPackageProduct("Supplier", selectedItemId = -1);
