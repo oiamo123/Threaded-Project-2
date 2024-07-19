@@ -17,7 +17,6 @@ namespace ThreadedProject2
     public partial class AddEditPackage : Form
     {
         Models.TravelExpertsContext context = new Models.TravelExpertsContext();
-        DbGet dbGet = new DbGet();
         private int id { get; set; }
         private bool isAdd { get; set; }
 
@@ -33,7 +32,7 @@ namespace ThreadedProject2
         {
             if (id != -1)
             {
-                Package? package = dbGet.GetPackages(id).FirstOrDefault();
+                Package? package = DB.Get.Packages(id).FirstOrDefault();
                 txtAgencyComission.Text = package.PkgAgencyCommission.ToString();
                 txtPackagePrice.Text = package.PkgBasePrice.ToString();
                 txtDescription.Text = package.PkgDesc;
@@ -69,7 +68,9 @@ namespace ThreadedProject2
                     PkgBasePrice = Math.Round(Decimal.Parse(txtPackagePrice.Text), 2),
                     PkgAgencyCommission = Math.Round(Decimal.Parse(txtAgencyComission.Text), 2)
                 };
+
                 context.Add(package);
+
                 clearTextboxes();
             } 
             else if (!isAdd && isValid())
@@ -86,19 +87,19 @@ namespace ThreadedProject2
                     package.PkgEndDate = dtpEnd.Value;
                     package.PkgBasePrice = Math.Round(Decimal.Parse(txtPackagePrice.Text), 2);
                     package.PkgAgencyCommission = Math.Round(Decimal.Parse(txtAgencyComission.Text), 2);
+
                     context.Packages.Update(package);
-                    context.SaveChanges();
-                    Debug.WriteLine(package);
+
+                    
                     MessageBox.Show("Package updated");
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Sql Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                
-            }
+                context.SaveChanges();
 
-            
+            }  
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -116,7 +117,7 @@ namespace ThreadedProject2
                 if (Validation.IsSentence(txtName.Text, "Name") &&
                     Validation.IsDecimal(txtPackagePrice.Text, "Package price") &&
                 Validation.IsDecimal(txtAgencyComission.Text, "Agency commission") &&
-                Validation.CheckDate(dtpStart, "State date") &&
+                Validation.CheckDate(dtpStart, "Start date") &&
                 Validation.CheckDate(dtpEnd, "End date") && 
                 Validation.IsSentence(txtDescription.Text, "Description"))      
                 {

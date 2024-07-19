@@ -17,9 +17,9 @@ public partial class ProductsSupplier
     [Key]
     public int ProductSupplierId { get; set; }
 
-    public int? ProductId { get; set; }
+    public int ProductId { get; set; }
 
-    public int? SupplierId { get; set; }
+    public int SupplierId { get; set; }
 
     [ForeignKey("ProductId")]
     [InverseProperty("ProductsSuppliers")]
@@ -27,7 +27,7 @@ public partial class ProductsSupplier
 
     [ForeignKey("SupplierId")]
     [InverseProperty("ProductsSuppliers")]
-    public virtual Supplier? Supplier { get; set; }
+    public virtual Supplier Supplier { get; set; }
 
     [ForeignKey("ProductSupplierId")]
     [InverseProperty("ProductSuppliers")]

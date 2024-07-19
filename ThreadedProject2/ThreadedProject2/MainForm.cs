@@ -10,18 +10,14 @@ namespace ThreadedProject2
 {
     public partial class MainForm : Form
     {
-        DbGet dbGet = new DbGet();
         Models.TravelExpertsContext context = new Models.TravelExpertsContext();
-
         public delegate string FormatItemDelegate<T>(T item);
-
         List<string> views = new List<string>();
 
         public MainForm()
         {
             InitializeComponent();
         }
-
         // When form loads list packages
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -66,9 +62,9 @@ namespace ThreadedProject2
         {
             if (val) views.Add("packages");
             UpdateListBox($"{"Id".PadRight(6)}{"Name".PadRight(22)}" +
-                          $"{"Start Date".PadRight(12)}{"End Date".PadRight(12)}" +
-                          $"{"Description".PadRight(48)}{"Base Price".PadRight(12)}" +
-                          $"{"Agency Com.".PadRight(12)}", StringFormats.FormatPackages, dbGet.GetPackages());
+                $"{"Start Date".PadRight(12)}{"End Date".PadRight(12)}" +
+                $"{"Description".PadRight(48)}{"Base Price".PadRight(12)}" +
+                $"{"Agency Com.".PadRight(12)}", StringFormats.FormatPackages, DB.Get.Packages());
         }
 
         // List products. Calls Update list box
@@ -76,7 +72,7 @@ namespace ThreadedProject2
         private void ListProducts(bool val)
         {
             if (val) views.Add("products");
-            UpdateListBox($"{"Id".PadRight(6)}Product Name", StringFormats.FormatProducts, dbGet.GetProducts());
+            UpdateListBox($"{"Id".PadRight(6)}Product Name", StringFormats.FormatProducts, DB.Get.Products());
         }
 
         // List suppliers. Calls Update list box
@@ -84,7 +80,8 @@ namespace ThreadedProject2
         private void ListSuppliers(bool val)
         {
             if (val) views.Add("suppliers");
-            UpdateListBox($"{"Id".PadRight(6)}Supplier Name", StringFormats.FormatSuppliers, dbGet.GetSuppliers());
+            UpdateListBox($"{"Id".PadRight(6)}Supplier Name", StringFormats.FormatSuppliers, DB.Get.Suppliers());
+
         }
 
         // Lists product suppliers. Calls Update list box
@@ -92,16 +89,20 @@ namespace ThreadedProject2
         private void ListProductSuppliers(bool val, int id = -1)
         {
             if (val) views.Add("product supplies");
-            UpdateListBox($"{"Id".PadRight(6)}{"Product Id".PadRight(12)}{"Sup. Id".PadRight(8)}",
-                StringFormats.FormatProductsSupplier, dbGet.GetProductSuppliers(id));
+            UpdateListBox($"{"Id".PadRight(6)}{"Product".PadRight(21)}{"Supplier"}", StringFormats.FormatProductsSupplier, DB.Get.ProductSuppliers(id));
         }
 
         // Lists Suppliers contacts. Calls Update list box
         // If bool is true, add's "supplier contacts" to views list
         private void ListSupplierContact(bool val, bool useLast = false)
         {
+            int id = -1;
+            if (views.Last().Equals("product supplies") || views.Last().Equals("package product supplies")) id = DB.Get.ProductSuppliers(Id.GetId(lstData)).FirstOrDefault().SupplierId;
+            if (views.Last().Equals("suppliers")) id = Id.GetId(lstData);
+
             if (val) views.Add("supplier contacts");
-            UpdateListBox($"{"Id".PadRight(6)}{"First Name".PadRight(15)}{"LastName".PadRight(15)}{"Email".PadRight(33)}{"Fax".PadRight(12)}{"Address".PadRight(50)}", StringFormats.FormatSupplierContacts, dbGet.GetSupplierContacts(Id.GetId(lstData), useLast));
+            
+            UpdateListBox($"{"Id".PadRight(6)}{"First Name".PadRight(15)}{"LastName".PadRight(15)}{"Email".PadRight(33)}{"Fax".PadRight(12)}{"Address".PadRight(50)}", StringFormats.FormatSupplierContacts, DB.Get.SupplierContacts(id, useLast));
         }
 
         // List packages product supplies. Calls Update list box
@@ -109,8 +110,7 @@ namespace ThreadedProject2
         private void ListPackageProductSuppliers(bool val, bool useLast = false)
         {
             if (val) views.Add("package product supplies");
-            UpdateListBox($"{"Id".PadRight(6)}{"Product Id".PadRight(12)}{"Sup. Id".PadRight(8)}",
-                StringFormats.FormatProductsSupplier, dbGet.GetPackageProductSupplies(lstData, useLast));
+            UpdateListBox($"{"Id".PadRight(6)}{"Product".PadRight(21)}{"Supplier"}", StringFormats.FormatProductsSupplier, DB.Get.PackageProductSupplies(lstData, useLast));
         }
 
         // disables/enables more, less, edit and remove buttons
@@ -139,19 +139,10 @@ namespace ThreadedProject2
         {
             if (lstData.SelectedItem != null)
             {
-                enableEditRemove(true);
-                if (views.Last().Equals("packages") || views.Last().Equals("suppliers") ||
-                    views.Last().Equals("package product supplies"))
+                disableButtons(true);
+                if (views.Last().Equals("products"))
                 {
-                    enableEditRemove(true);
-                    enableMoreLess(true, true);
-                }
-                else if (views.Last().Equals("product supplies"))
-                {
-                    //re-enable if doesn't work
-                    // enableEditRemove(false);
-                    enableEditRemove(true);
-                    enableMoreLess(true, true);
+                    enableMoreLess(false, false);
                 }
             }
         }
@@ -162,8 +153,7 @@ namespace ThreadedProject2
         {
             try
             {
-                if (!int.TryParse(lstData.SelectedItem.ToString().Substring(0, 6).TrimEnd(), out int val))
-                    throw new Exception("First row cannot be selected");
+                if (!int.TryParse(lstData.SelectedItem.ToString().Substring(0, 6).TrimEnd(), out int val)) throw new Exception("First row cannot be selected");
                 if (views.Last().Equals("packages") && lstData.SelectedItem != null)
                 {
                     ListPackageProductSuppliers(true);
@@ -172,7 +162,6 @@ namespace ThreadedProject2
                 {
                     ListSupplierContact(true);
                 }
-
                 enableEditRemove(false);
                 enableMoreLess(false, true);
             }
@@ -180,7 +169,6 @@ namespace ThreadedProject2
             {
                 MessageBox.Show(ex.Message);
             }
-
             Debug.WriteLine(views);
         }
 
@@ -213,160 +201,172 @@ namespace ThreadedProject2
         // query correct model, remove item and relist appropriate data
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            DialogResult res = MessageBox.Show("Are you sure you would like to remove this?", "Remove item",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult res = MessageBox.Show("Are you sure you would like to remove this?", "Remove item", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (res == DialogResult.Yes)
             {
                 if (views.Last().Equals("packages"))
                 {
-                    Models.Package package = dbGet.GetPackages(Id.GetId(lstData)).FirstOrDefault();
-                    context.Packages.Remove(package);
-                    context.SaveChanges();
+                    var package = context.Packages.Where(p => p.PackageId == Id.GetId(lstData)).FirstOrDefault();
+
+                    DB.Remove.Package(package.PackageId);
+
                     ListPackages(false);
                 }
-
                 if (views.Last().Equals("products"))
                 {
-                    Product product = dbGet.GetProducts(Id.GetId(lstData)).FirstOrDefault();
-                    context.Products.Remove(product);
-                    context.SaveChanges();
+                    DialogResult prodRes = DialogResult.None;
+
+                    // get product
+                    var product = DB.Get.Products(Id.GetId(lstData)).FirstOrDefault();
+
+                    // check to see if product is connected to any product supplies
+                    var productSupplies = context.ProductsSuppliers.Where(p => p.ProductId == product.ProductId).ToList();
+
+                    // check to see if product is connected to any package product supplies
+                    var packageProductSupplies = context.Packages.Include(p => p.ProductSuppliers.Where(ps => ps.ProductId == product.ProductId)).ToList();
+
+                    string warningMessage = "Are you sure you want to continue?";
+                    if (productSupplies.Count() > 0 || packageProductSupplies.Count() > 0)
+                    {
+                        if (packageProductSupplies.Count() > 0) warningMessage += " This product is associated with a packages product supplies.";
+                        if (productSupplies.Count() > 0) warningMessage += " This contact is assosciated with a product supply.";
+
+                        prodRes = MessageBox.Show(warningMessage, "Remove Supplier", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        prodRes = DialogResult.OK;
+                    }
+
+                    // remove product supplies from package product supplies, product supply is also removed
+                    DB.Remove.PackageProductSupply(context, packageProductSupplies);
+
+                    DB.Remove.Products(product.ProductId);
+
                     ListProducts(false);
                 }
-
                 if (views.Last().Equals("suppliers"))
                 {
                     DialogResult supRes = DialogResult.None;
 
                     // get supplier
-                    Supplier supplier = dbGet.GetSuppliers(Id.GetId(lstData)).FirstOrDefault();
+                    List<Supplier> supplier = DB.Get.Suppliers(Id.GetId(lstData)).ToList();
 
-                    // get supplier contacts
-                    List<SupplierContact> supplierContacts = context.SupplierContacts.Where(p => p.SupplierId == supplier.SupplierId).ToList();
-
-                    // get all products suppliers with same supplierid
-                    List<ProductsSupplier> productSupplies = context.ProductsSuppliers.Where(p => p.SupplierId == supplier.SupplierId).ToList();
-
-                    // If Supplier contacts count > 0, confirm removal
-                    string warningMessage = "Are you sure you want to continue?";
-                    if (supplierContacts.Count != 0 || productSupplies.Count() != 0)
+                    using (var context = new Models.TravelExpertsContext())
                     {
-                        if (supplierContacts.Count != 0) warningMessage += " This will also remove all associated contacts.";
-                        if (productSupplies.Count() != 0) warningMessage += " This contact is assosciated with a packages product supplies.";
+                        // get supplier contacts
+                        List<SupplierContact> supplierContacts = context.SupplierContacts.Where(p => p.SupplierId == supplier.First().SupplierId).ToList();
 
-                        supRes = MessageBox.Show(warningMessage, "Remove Supplier", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                        // get all products suppliers with same supplierid
+                        List<ProductsSupplier> productSupplies = context.ProductsSuppliers.Where(p => p.SupplierId == supplier.First().SupplierId).ToList();
+
+                        var packages = context.Packages.Include(p => p.ProductSuppliers.Where(p => p.SupplierId == supplier.First().SupplierId)).ToList();
+
+                        // If Supplier contacts count > 0, confirm removal
+                        string warningMessage = "Are you sure you want to continue?";
+                        if (supplierContacts.Count > 0 || packages.Any(p => p.ProductSuppliers.Count != 0))
+                        {
+                            if (supplierContacts.Count > 0) warningMessage += " This will also remove all associated contacts.";
+                            if (packages.Any(p => p.ProductSuppliers.Count != 0)) warningMessage += " This contact is assosciated with a packages product supplies.";
+
+                            supRes = MessageBox.Show(warningMessage, "Remove Supplier", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            supRes = DialogResult.OK;
+                        }
+
+                        // remove product supplies from packages
+                        if (packages.Any(p => p.ProductSuppliers.Count != 0)) DB.Remove.PackageProductSupply(context, packages);
+                        
+                        // remove product supply
+                        DB.Remove.ProductSupplies(productSupplies);
+
+                        // remove supplier contacts from supplier
+                        if (supplierContacts.Count > 0)
+                        DB.Remove.SupplierContacts(supplierContacts);
+
+                        // remove supplier
+                        DB.Remove.Suppliers(supplier);
+
+                        ListSuppliers(false);
+                    }
+                }
+                if (views.Last().Equals("product supplies"))
+                {
+                    // get product supplier
+                    var prodSupplier = DB.Get.ProductSuppliers(Id.GetId(lstData)).ToList();
+                    var packages = context.Packages.Include(p => p.ProductSuppliers.Where(p => p.ProductSupplierId == prodSupplier.FirstOrDefault().ProductSupplierId)).ToList();
+
+                    // remove product supplier from any associated packages and product supplies
+                    if (packages.All(package => package.ProductSuppliers.Count() == 0))
+                    {
+                        DB.Remove.ProductSupplies(prodSupplier);
                     }
                     else
                     {
-                        supRes = DialogResult.OK;
+                        DB.Remove.PackageProductSupply(context, packages);
                     }
 
-                    // get product supplies from packages
-                    var packageProductSupplies = context.Packages.Include(p => p.ProductSuppliers.Where(p => p.SupplierId == supplier.SupplierId));
-
-                    // remove product supplies from package
-                    foreach (var package in packageProductSupplies)
-                    {
-                        foreach (var productsupply in productSupplies)
-                        {
-                            // remove product suppliers from package and from product supplies
-                            package.ProductSuppliers.Remove(productsupply);
-                            context.ProductsSuppliers.Remove(productsupply);
-                        }
-                    }
-
-                    // remove product supplies from packages
-                    foreach (var productsupply in productSupplies)
-                    {
-                        foreach (var package in context.Packages)
-                            productsupply.Packages.Remove(package);
-                    }
-
-                    // remove supplier contacts from supplier
-                    foreach(var contact in supplierContacts)
-                    {
-                        context.SupplierContacts.Remove(contact);
-                    }
-
-                    // remove supplier
-                    context.Remove(supplier);
-
-                    context.SaveChanges();
-                    ListSuppliers(false);
-                }
-
-                if (views.Last().Equals("product supplies"))
-                {
-                    ProductsSupplier prodSupplier = dbGet.GetProductSuppliers(Id.GetId(lstData)).FirstOrDefault();
-                    context.ProductsSuppliers.Remove(prodSupplier);
-                    context.SaveChanges();
+                    // list product suppliers
                     ListProductSuppliers(false);
                 }
+                if (views.Last().Equals("package product supplies"))
+                {   // get all packages where product supplier id = id
+                    var packages = context.Packages.Include(p => p.ProductSuppliers.Where(ps => ps.ProductSupplierId == Id.GetId(lstData))).ToList();
+                    
+                    // get product supply
+                    var productSupply = DB.Get.ProductSuppliers(Id.GetId(lstData));
+                    
+                    // remove product supply from all packages
+                    DB.Remove.PackageProductSupply(context, packages);
+                    
+                    // remove product supply
+                    DB.Remove.ProductSupplies(productSupply);
 
+                    ListPackageProductSuppliers(false, true);
+                }
                 if (views.Last().Equals("supplier contacts"))
                 {
-                    var supContact = context.SupplierContacts.AsNoTracking()
-                        .FirstOrDefault(p => p.SupplierContactId == Id.GetId(lstData));
-                    context.SupplierContacts.Remove(supContact);
-                    context.SaveChanges();
+                    // get supplier contact id
+                    var supContact = context.SupplierContacts.Where(s => s.SupplierContactId == Id.GetId(lstData)).ToList();
+
+                    // remove supplier contact
+                    DB.Remove.SupplierContacts(supContact);
+
+                    // list supplier contacts
                     ListSupplierContact(false, true);
                 }
             }
         }
 
-        // String array of views/Types
-        public static readonly string[] Types =
-            ["Product", "Supplier", "Product Supplier", "Supplier Contact", "Package"];
-
-        // Default value indicating no selection
-        private int mainId = -1;
-
         // when button add is clicked, check view to open correct dialog.
         // list appropriate data once it is clicked
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            switch (views.Last())
+            //TODO: Consider Switch statement
+            if (views.Last() == "packages")
             {
-                case "packages":
-                {
-                    Form form = new AddEditPackage();
-                    form.ShowDialog();
-                    ListPackages(false);
-                    break;
-                }
-                case "supplier contacts":
-                    break;
-                case "suppliers":
-                {
-                    SupplierAddModifyForm form = new SupplierAddModifyForm();
-                    form.SetAddMode();
-                    form.ShowDialog();
-                    ListSuppliers(false);
-                    break;
-                }
-                //If using AddEditPackageProduct
-                //Using Erin Form^^
-                // if (views.Last() == "suppliers")
-                // {
-                //     //set type to main form
-                //     AddEditPackageProduct form = new AddEditPackageProduct(Types[1], mainId);
-                //     form.ShowDialog();
-                //     ListProducts(false);
-                // }
-                case "products":
-                {
-                    //set type to main form
-                    AddEditPackageProduct form = new AddEditPackageProduct(Types[0], mainId);
-                    form.ShowDialog();
-                    ListProducts(false);
-                    break;
-                }
-                case "product supplies":
-                {
-                    AddEditPackageProduct form = new AddEditPackageProduct(Types[2], mainId);
-                    form.ShowDialog();
-                    ListProductSuppliers(false);
-                    break;
-                }
+                Form form = new AddEditPackage();
+                form.ShowDialog();
+                ListPackages(false);
+            }
+            if (views.Last() == "supplier contacts")
+            {
+
+            }
+            if (views.Last() == "suppliers")
+            {
+                SupplierAddModifyForm form = new SupplierAddModifyForm();
+                form.SetAddMode();
+                form.ShowDialog();
+                ListSuppliers(false);
+            }
+            if (views.Last() == "products" || views.Last() == "product supplies" || views.Last() == "package product supplies")
+            {
+                Form form = new AddEditPackageProduct(Id.GetId(lstData));
+                form.ShowDialog();
+                ListProducts(false);
             }
         }
 
@@ -383,30 +383,30 @@ namespace ThreadedProject2
                     form.ShowDialog();
                     ListPackages(false);
                 }
-
                 if (views.Last() == "products")
                 {
-                    AddEditPackageProduct form = new AddEditPackageProduct(Types[0], Id.GetId(lstData));
+                    Form form = new AddEditPackageProduct(Id.GetId(lstData));
                     form.ShowDialog();
                     ListProducts(false);
                 }
-
                 if (views.Last() == "product supplies")
                 {
-                    AddEditPackageProduct form = new AddEditPackageProduct(Types[2], Id.GetId(lstData));
+                    Form form = new AddEditPackageProduct(Id.GetId(lstData));
+                    //TODO: Add this to second form to allow more dynamic editing
+                    // form.type = "product supplies";
                     form.ShowDialog();
-                    ListProductSuppliers(false);
+                    ListProducts(false);
                 }
-
+                
                 if (views.Last() == "supplier contacts")
                 {
-                }
 
-                if (views.Last() == "suppliers")
+                }
+                if(views.Last() == "suppliers")
                 {
                     SupplierAddModifyForm form = new SupplierAddModifyForm();
-                    List<Supplier> s = dbGet.GetSuppliers();
-                    form.SetEditMode(s[lstData.SelectedIndex - 1]);
+                    List<Supplier> s = DB.Get.Suppliers();
+                    form.SetEditMode(s[lstData.SelectedIndex-1]);
                     form.ShowDialog();
                     ListSuppliers(false);
                 }
@@ -415,6 +415,7 @@ namespace ThreadedProject2
             {
                 MessageBox.Show(ex.Message);
             }
+            
         }
 
         // clears list box
