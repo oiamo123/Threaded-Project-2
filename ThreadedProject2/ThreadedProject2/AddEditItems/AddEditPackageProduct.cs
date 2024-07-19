@@ -8,10 +8,6 @@ namespace ThreadedProject2
         //new database context
         Models.TravelExpertsContext context = new TravelExpertsContext();
 
-        //DbGet to get data
-        //TODO:Change to new DB Instance
-        DbGet dbGet = new DbGet();
-
         //SelectedItemId to get data provided from main form using Id.GetId(lstData)
         private int selectedItemId;
 
@@ -87,7 +83,7 @@ namespace ThreadedProject2
             txtProduct.Visible = false;
             txtSupplier.Enabled = false;
             txtSupplier.Visible = false;
-            
+
             // Disable and hide buttons for adding new Product and Supplier
             // btnNewProduct.Enabled = false;
             // btnNewProduct.Visible = false;
@@ -157,13 +153,13 @@ namespace ThreadedProject2
                         //Then display data
                         case "Product":
                         {
-                            Product? product = dbGet.GetProducts(selectedItemId).FirstOrDefault();
+                            Product? product = DB.Get.Products(selectedItemId).FirstOrDefault();
                             txtProduct.Text = product?.ProdName;
                             break;
                         }
                         case "Supplier":
                         {
-                            Supplier? supplier = dbGet.GetSuppliers(selectedItemId).FirstOrDefault();
+                            Supplier? supplier = DB.Get.Suppliers(selectedItemId).FirstOrDefault();
                             txtSupplier.Text = supplier?.SupName;
                             break;
                         }
@@ -172,18 +168,18 @@ namespace ThreadedProject2
                         {
                             //Get Product Supplier ID
                             ProductsSupplier? productSupplier =
-                                dbGet.GetProductSuppliers(selectedItemId).FirstOrDefault();
+                                DB.Get.ProductSuppliers(selectedItemId).FirstOrDefault();
 
                             // Populate both ComboBoxes for Product and Supplier and select the current product and supplier based on selectedItemId
                             if (productSupplier != null)
                             {
-                                var products = dbGet.GetProducts();
+                                var products = DB.Get.Products();
                                 cboProduct.DataSource = products;
                                 cboProduct.DisplayMember = "ProdName";
                                 cboProduct.ValueMember = "ProductId";
                                 cboProduct.SelectedValue = productSupplier.ProductId;
 
-                                var suppliers = dbGet.GetSuppliers();
+                                var suppliers = DB.Get.Suppliers();
                                 cboSupplier.DataSource = suppliers;
                                 cboSupplier.DisplayMember = "SupName";
                                 cboSupplier.ValueMember = "SupplierId";
@@ -197,12 +193,12 @@ namespace ThreadedProject2
                 //When Adding and cbo controls are enables
                 else
                 {
-                    var products = dbGet.GetProducts();
+                    var products = DB.Get.Products();
                     cboProduct.DataSource = products;
                     cboProduct.DisplayMember = "ProdName";
                     cboProduct.ValueMember = "ProductId";
 
-                    var suppliers = dbGet.GetSuppliers();
+                    var suppliers = DB.Get.Suppliers();
                     cboSupplier.DataSource = suppliers;
                     cboSupplier.DisplayMember = "SupName";
                     cboSupplier.ValueMember = "SupplierId";
@@ -464,13 +460,13 @@ namespace ThreadedProject2
             if (FormType == "Product Supplier")
             {
                 // Refresh products ComboBox
-                var products = dbGet.GetProducts();
+                var products = DB.Get.Products();
                 cboProduct.DataSource = products;
                 cboProduct.DisplayMember = "ProdName";
                 cboProduct.ValueMember = "ProductId";
 
                 // Refresh suppliers ComboBox
-                var suppliers = dbGet.GetSuppliers();
+                var suppliers = DB.Get.Suppliers();
                 cboSupplier.DataSource = suppliers;
                 cboSupplier.DisplayMember = "SupName";
                 cboSupplier.ValueMember = "SupplierId";
