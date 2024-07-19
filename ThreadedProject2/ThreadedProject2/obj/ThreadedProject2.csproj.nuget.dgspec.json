@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\adeog\\source\\repos\\Threaded-Project-2\\ThreadedProject2\\ThreadedProject2\\ThreadedProject2.csproj": {}
+    "C:\\Users\\gmoia\\OneDrive\\Desktop\\Coding stuff\\School\\Threaded-Project-2\\ThreadedProject2\\ThreadedProject2\\ThreadedProject2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\adeog\\source\\repos\\Threaded-Project-2\\ThreadedProject2\\ThreadedProject2\\ThreadedProject2.csproj": {
+    "C:\\Users\\gmoia\\OneDrive\\Desktop\\Coding stuff\\School\\Threaded-Project-2\\ThreadedProject2\\ThreadedProject2\\ThreadedProject2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\adeog\\source\\repos\\Threaded-Project-2\\ThreadedProject2\\ThreadedProject2\\ThreadedProject2.csproj",
+        "projectUniqueName": "C:\\Users\\gmoia\\OneDrive\\Desktop\\Coding stuff\\School\\Threaded-Project-2\\ThreadedProject2\\ThreadedProject2\\ThreadedProject2.csproj",
         "projectName": "ThreadedProject2",
-        "projectPath": "C:\\Users\\adeog\\source\\repos\\Threaded-Project-2\\ThreadedProject2\\ThreadedProject2\\ThreadedProject2.csproj",
-        "packagesPath": "C:\\Users\\adeog\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\adeog\\source\\repos\\Threaded-Project-2\\ThreadedProject2\\ThreadedProject2\\obj\\",
+        "projectPath": "C:\\Users\\gmoia\\OneDrive\\Desktop\\Coding stuff\\School\\Threaded-Project-2\\ThreadedProject2\\ThreadedProject2\\ThreadedProject2.csproj",
+        "packagesPath": "C:\\Users\\gmoia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gmoia\\OneDrive\\Desktop\\Coding stuff\\School\\Threaded-Project-2\\ThreadedProject2\\ThreadedProject2\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\adeog\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\gmoia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -61,10 +65,6 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.7, )"
-            },
-            "System.Configuration.ConfigurationManager": {
-              "target": "Package",
-              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -86,7 +86,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

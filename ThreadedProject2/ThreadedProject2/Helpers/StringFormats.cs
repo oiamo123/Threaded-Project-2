@@ -16,7 +16,9 @@ namespace ThreadedProject2
         /// <returns></returns>
         static public string FormatProductsSupplier(ProductsSupplier p)
         {
-            return $"{p.ProductSupplierId.ToString().PadRight(6)} {p.ProductId.ToString().PadRight(12)} {p.SupplierId.ToString().PadRight(8)}";
+            return $"{p.SupplierId.ToString().PadRight(8)}" +
+                $"{p.ProductId.ToString().PadRight(12)}" +
+                $"{p.ProductSupplierId.ToString().PadRight(6)}";
         }
 
         /// <summary>
@@ -37,7 +39,7 @@ namespace ThreadedProject2
         static public string FormatSuppliers(Supplier p)
         {
             return $"{p.SupplierId.ToString().PadRight(6)}" +
-                   $"{char.ToUpper(p.SupName[0]) + p.SupName.Substring(1).ToLower()}";
+                $"{char.ToUpper(p.SupName[0]) + p.SupName.Substring(1).ToLower()}";
         }
 
         /// <summary>
@@ -47,11 +49,10 @@ namespace ThreadedProject2
         /// <returns></returns>
         static public string FormatPackages(Package p)
         {
-            return
-                $"{p.PackageId.ToString().PadRight(6)}{p.PkgName.PadRight(22)}{p.PkgStartDate.ToString("dd/MM/yyyy").PadRight(12)}" +
-                $"{p.PkgEndDate.ToString("dd/MM/yyyy").PadRight(12)}{p.PkgDesc.PadRight(48)}" +
-                $"{Math.Round(p.PkgBasePrice, 2).ToString("c").PadRight(12)}" +
-                $"{Math.Round(p.PkgAgencyCommission, 2).ToString("c")}";
+            return $"{p.PackageId.ToString().PadRight(6)}{p.PkgName.PadRight(22)}{p.PkgStartDate.ToString("dd/MM/yyyy").PadRight(12)}" +
+                    $"{p.PkgEndDate.ToString("dd/MM/yyyy").PadRight(12)}{p.PkgDesc.PadRight(48)}" +
+                    $"{Math.Round(p.PkgBasePrice, 2).ToString("c").PadRight(12)}" +
+                    $"{Math.Round(p.PkgAgencyCommission, 2).ToString("c")}";
         }
 
         /// <summary>
@@ -60,13 +61,15 @@ namespace ThreadedProject2
         /// <param name="i">SupplierContact to create the string from</param>
         /// <returns></returns>
         static public string FormatSupplierContacts(SupplierContact i)
-        {
+        {   
+            
             return $"{i.SupplierContactId.ToString().PadRight(6)}" +
-                   $"{(i.SupConFirstName ??= "Unavailable").PadRight(15)}" +
-                   $"{(i.SupConLastName ??= "Unavailable").PadRight(15)}" +
-                   $"{(i.SupConEmail ??= "Unavailable").PadRight(33)}" +
-                   $"{(i.SupConFax ??= "Unavailable").PadRight(12)}" +
-                   $"{($"{i.SupConAddress ??= ""} {i.SupConPostal ??= ""} {i.SupConCity ??= ""}").PadRight(50)}";
+                $"{(i.SupConFirstName ??= "Unavailable").PadRight(15)}" +
+                $"{(i.SupConLastName ??= "Unavailable").PadRight(15)}" +
+                $"{(i.SupConEmail ??= "Unavailable").PadRight(33)}" +
+                $"{(i.SupConFax ??= "Unavailable").PadRight(12)}" +
+                $"{($"{i.SupConAddress ??= ""} {i.SupConPostal ??= ""} {i.SupConCity ??= ""}").PadRight(50)}";
         }
+        
     }
 }
