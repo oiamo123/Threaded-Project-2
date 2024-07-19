@@ -8,9 +8,6 @@ namespace ThreadedProject2
         //new database context
         Models.TravelExpertsContext context = new TravelExpertsContext();
 
-        //DbGet to get data
-        DbGet dbGet = new DbGet();
-
         //ID to get data provided from main form using Id.GetId(lstData)
         private int id;
 
@@ -76,7 +73,7 @@ namespace ThreadedProject2
                 if (id != -1)
                 {
                     //Get product by that id
-                    Product? product = dbGet.GetProducts(id).FirstOrDefault();
+                    Product? product = DB.Get.Products(id).FirstOrDefault();
                     //Then display data
                     txtProduct.Text = product?.ProdName;
                 }

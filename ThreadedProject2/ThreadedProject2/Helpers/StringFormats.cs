@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ThreadedProject2.Models;
+using ThreadedProject2.Helpers;
 
 namespace ThreadedProject2
 {
@@ -16,9 +17,12 @@ namespace ThreadedProject2
         /// <returns></returns>
         static public string FormatProductsSupplier(ProductsSupplier p)
         {
-            return $"{p.SupplierId.ToString().PadRight(8)}" +
-                $"{p.ProductId.ToString().PadRight(12)}" +
-                $"{p.ProductSupplierId.ToString().PadRight(6)}";
+            var product = DB.Get.Products(p.ProductId).FirstOrDefault();
+            var supplier = DB.Get.Suppliers(p.SupplierId).FirstOrDefault();
+
+            return $"{p.ProductSupplierId.ToString().PadRight(6)}" + 
+                $"{product.ProdName.PadRight(21)}" +
+                $"{char.ToUpper(supplier.SupName[0]) + supplier.SupName.Substring(1).ToLower()}";
         }
 
         /// <summary>

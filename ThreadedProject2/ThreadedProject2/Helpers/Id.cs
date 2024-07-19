@@ -18,9 +18,8 @@ namespace ThreadedProject2.Helpers
         {
             int id = 0;
             {
-                if (!int.TryParse(lstData.SelectedItems[0].ToString().Substring(0, 6).TrimEnd(), out int value)) return -1;
-                id = int.Parse(lstData.SelectedItems[0].ToString().Substring(0, 6).TrimEnd());
-            }
+                    if (!int.TryParse(lstData.SelectedItems[0].ToString().Substring(0, 6).TrimEnd(), out int value)) return -1;
+                    id = int.Parse(lstData.SelectedItems[0].ToString().Substring(0, 6).TrimEnd());            }
             return id;
         }
     }
