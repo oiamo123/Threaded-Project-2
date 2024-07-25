@@ -58,11 +58,11 @@
             txtSCSupplierID = new TextBox();
             label15 = new Label();
             label16 = new Label();
-            cboAffilationID = new ComboBox();
+            cboAffilation = new ComboBox();
             btnCancel = new Button();
             btnReset = new Button();
-            groupBox1 = new GroupBox();
-            groupBox1.SuspendLayout();
+            grpSCDetails = new GroupBox();
+            grpSCDetails.SuspendLayout();
             SuspendLayout();
             // 
             // txtSCID
@@ -309,9 +309,9 @@
             label15.AutoSize = true;
             label15.Location = new Point(341, 90);
             label15.Name = "label15";
-            label15.Size = new Size(159, 20);
+            label15.Size = new Size(129, 20);
             label15.TabIndex = 32;
-            label15.Text = "Affiliation ID:";
+            label15.Text = "Affiliation:";
             // 
             // label16
             // 
@@ -322,14 +322,14 @@
             label16.TabIndex = 33;
             label16.Text = "Supplier ID:";
             // 
-            // cboAffilationID
+            // cboAffilation
             // 
-            cboAffilationID.FormattingEnabled = true;
-            cboAffilationID.Location = new Point(341, 113);
-            cboAffilationID.Margin = new Padding(3, 2, 3, 2);
-            cboAffilationID.Name = "cboAffilationID";
-            cboAffilationID.Size = new Size(288, 28);
-            cboAffilationID.TabIndex = 34;
+            cboAffilation.FormattingEnabled = true;
+            cboAffilation.Location = new Point(341, 113);
+            cboAffilation.Margin = new Padding(3, 2, 3, 2);
+            cboAffilation.Name = "cboAffilation";
+            cboAffilation.Size = new Size(288, 28);
+            cboAffilation.TabIndex = 34;
             // 
             // btnCancel
             // 
@@ -351,51 +351,50 @@
             btnReset.Text = "&Reset";
             btnReset.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // grpSCDetails
             // 
-            groupBox1.Controls.Add(cboAffilationID);
-            groupBox1.Controls.Add(label16);
-            groupBox1.Controls.Add(label15);
-            groupBox1.Controls.Add(txtSCSupplierID);
-            groupBox1.Controls.Add(label14);
-            groupBox1.Controls.Add(txtSCURL);
-            groupBox1.Controls.Add(label12);
-            groupBox1.Controls.Add(txtSCEmail);
-            groupBox1.Controls.Add(label13);
-            groupBox1.Controls.Add(txtSCFax);
-            groupBox1.Controls.Add(label11);
-            groupBox1.Controls.Add(txtSCBusinessPhone);
-            groupBox1.Controls.Add(label10);
-            groupBox1.Controls.Add(txtSCCountry);
-            groupBox1.Controls.Add(label9);
-            groupBox1.Controls.Add(txtSCPostalCode);
-            groupBox1.Controls.Add(label8);
-            groupBox1.Controls.Add(txtSCProvince);
-            groupBox1.Controls.Add(label7);
-            groupBox1.Controls.Add(txtSCCity);
-            groupBox1.Controls.Add(label6);
-            groupBox1.Controls.Add(txtSCAddress);
-            groupBox1.Controls.Add(label5);
-            groupBox1.Controls.Add(txtSCCompany);
-            groupBox1.Controls.Add(label4);
-            groupBox1.Controls.Add(txtSCLastName);
-            groupBox1.Controls.Add(label3);
-            groupBox1.Controls.Add(txtSCFirstName);
-            groupBox1.Controls.Add(lblSupplierContactID);
-            groupBox1.Controls.Add(txtSCID);
-            groupBox1.Location = new Point(43, 22);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(656, 594);
-            groupBox1.TabIndex = 37;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Add Supplier Contact";
+            grpSCDetails.Controls.Add(cboAffilation);
+            grpSCDetails.Controls.Add(label16);
+            grpSCDetails.Controls.Add(label15);
+            grpSCDetails.Controls.Add(txtSCSupplierID);
+            grpSCDetails.Controls.Add(label14);
+            grpSCDetails.Controls.Add(txtSCURL);
+            grpSCDetails.Controls.Add(label12);
+            grpSCDetails.Controls.Add(txtSCEmail);
+            grpSCDetails.Controls.Add(label13);
+            grpSCDetails.Controls.Add(txtSCFax);
+            grpSCDetails.Controls.Add(label11);
+            grpSCDetails.Controls.Add(txtSCBusinessPhone);
+            grpSCDetails.Controls.Add(label10);
+            grpSCDetails.Controls.Add(txtSCCountry);
+            grpSCDetails.Controls.Add(label9);
+            grpSCDetails.Controls.Add(txtSCPostalCode);
+            grpSCDetails.Controls.Add(label8);
+            grpSCDetails.Controls.Add(txtSCProvince);
+            grpSCDetails.Controls.Add(label7);
+            grpSCDetails.Controls.Add(txtSCCity);
+            grpSCDetails.Controls.Add(label6);
+            grpSCDetails.Controls.Add(txtSCAddress);
+            grpSCDetails.Controls.Add(label5);
+            grpSCDetails.Controls.Add(txtSCCompany);
+            grpSCDetails.Controls.Add(label4);
+            grpSCDetails.Controls.Add(txtSCLastName);
+            grpSCDetails.Controls.Add(label3);
+            grpSCDetails.Controls.Add(txtSCFirstName);
+            grpSCDetails.Controls.Add(lblSupplierContactID);
+            grpSCDetails.Controls.Add(txtSCID);
+            grpSCDetails.Location = new Point(43, 22);
+            grpSCDetails.Name = "grpSCDetails";
+            grpSCDetails.Size = new Size(656, 594);
+            grpSCDetails.TabIndex = 37;
+            grpSCDetails.TabStop = false;
+            grpSCDetails.Text = "Add Supplier Contact";
             // 
             // AddEditSupplierContact
             // 
-            AutoScaleDimensions = new SizeF(96F, 96F);
-            AutoScaleMode = AutoScaleMode.Dpi;
+            AutoScaleMode = AutoScaleMode.None;
             ClientSize = new Size(734, 721);
-            Controls.Add(groupBox1);
+            Controls.Add(grpSCDetails);
             Controls.Add(btnReset);
             Controls.Add(btnCancel);
             Controls.Add(btnAccept);
@@ -404,8 +403,8 @@
             Name = "AddEditSupplierContact";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AddEditSupplierContact";
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
+            grpSCDetails.ResumeLayout(false);
+            grpSCDetails.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -443,9 +442,9 @@
         private TextBox txtSCSupplierID;
         private Label label15;
         private Label label16;
-        private ComboBox cboAffilationID;
+        private ComboBox cboAffilation;
         private Button btnCancel;
         private Button btnReset;
-        private GroupBox groupBox1;
+        private GroupBox grpSCDetails;
     }
 }
