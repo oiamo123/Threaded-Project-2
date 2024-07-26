@@ -163,44 +163,44 @@ namespace ThreadedProject2
                         //Set what to get based on FormType//Get product by that selectedItemId
                         //Then display data
                         case "Product":
-                            {
-                                Product? product = DB.Get.Products(selectedItemId).FirstOrDefault();
-                                txtProduct.Text = product?.ProdName;
-                                break;
-                            }
+                        {
+                            Product? product = DB.Get.Products(selectedItemId).FirstOrDefault();
+                            txtProduct.Text = product?.ProdName;
+                            break;
+                        }
                         case "Supplier":
-                            {
-                                Supplier? supplier = DB.Get.Suppliers(selectedItemId).FirstOrDefault();
-                                txtSupplier.Text = supplier?.SupName;
-                                txtSupplierID.Text = supplier?.SupplierId.ToString();
-                                txtSupplierID.ReadOnly = true;
-                                break;
-                            }
+                        {
+                            Supplier? supplier = DB.Get.Suppliers(selectedItemId).FirstOrDefault();
+                            txtSupplier.Text = supplier?.SupName;
+                            txtSupplierID.Text = supplier?.SupplierId.ToString();
+                            txtSupplierID.ReadOnly = true;
+                            break;
+                        }
 
                         case "Product Supplier":
+                        {
+                            //Get Product Supplier ID
+                            ProductsSupplier? productSupplier =
+                                DB.Get.ProductSuppliers(selectedItemId).FirstOrDefault();
+
+                            // Populate both ComboBoxes for Product and Supplier and select the current product and supplier based on selectedItemId
+                            if (productSupplier != null)
                             {
-                                //Get Product Supplier ID
-                                ProductsSupplier? productSupplier =
-                                    DB.Get.ProductSuppliers(selectedItemId).FirstOrDefault();
+                                var products = DB.Get.Products();
+                                cboProduct.DataSource = products;
+                                cboProduct.DisplayMember = "ProdName";
+                                cboProduct.ValueMember = "ProductId";
+                                cboProduct.SelectedValue = productSupplier.ProductId;
 
-                                // Populate both ComboBoxes for Product and Supplier and select the current product and supplier based on selectedItemId
-                                if (productSupplier != null)
-                                {
-                                    var products = DB.Get.Products();
-                                    cboProduct.DataSource = products;
-                                    cboProduct.DisplayMember = "ProdName";
-                                    cboProduct.ValueMember = "ProductId";
-                                    cboProduct.SelectedValue = productSupplier.ProductId;
-
-                                    var suppliers = DB.Get.Suppliers();
-                                    cboSupplier.DataSource = suppliers;
-                                    cboSupplier.DisplayMember = "SupName";
-                                    cboSupplier.ValueMember = "SupplierId";
-                                    cboSupplier.SelectedValue = productSupplier.SupplierId;
-                                }
-
-                                break;
+                                var suppliers = DB.Get.Suppliers();
+                                cboSupplier.DataSource = suppliers;
+                                cboSupplier.DisplayMember = "SupName";
+                                cboSupplier.ValueMember = "SupplierId";
+                                cboSupplier.SelectedValue = productSupplier.SupplierId;
                             }
+
+                            break;
+                        }
                     }
                 }
                 //When Adding and cbo controls are enables(Still loads even when not displayed??)
