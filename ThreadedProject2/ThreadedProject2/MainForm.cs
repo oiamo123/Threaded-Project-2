@@ -241,6 +241,8 @@ namespace ThreadedProject2
                     // remove product supplies from package product supplies, product supply is also removed
                     DB.Remove.PackageProductSupply(context, packageProductSupplies);
 
+                    DB.Remove.ProductSupplies(productSupplies);
+
                     DB.Remove.Products(product.ProductId);
 
                     ListProducts(false);
@@ -340,11 +342,16 @@ namespace ThreadedProject2
             }
         }
 
+        public static readonly string[] Types =
+            ["Product", "Supplier", "Product Supplier", "Supplier Contact", "Package"];
+
+        // Default value indicating no selection
+        private int mainId = -1;
+
         // when button add is clicked, check view to open correct dialog.
         // list appropriate data once it is clicked
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            //TODO: Consider Switch statement
             if (views.Last() == "packages")
             {
                 Form form = new AddEditPackage();
@@ -353,20 +360,26 @@ namespace ThreadedProject2
             }
             if (views.Last() == "supplier contacts")
             {
-
+                Form form = new AddEditSupplierContact();
             }
             if (views.Last() == "suppliers")
             {
-                SupplierAddModifyForm form = new SupplierAddModifyForm();
-                form.SetAddMode();
+                AddEditPackageProduct form = new AddEditPackageProduct(Types[1], mainId);
                 form.ShowDialog();
                 ListSuppliers(false);
             }
-            if (views.Last() == "products" || views.Last() == "product supplies" || views.Last() == "package product supplies")
+            if (views.Last() == "products")
             {
-                Form form = new AddEditPackageProduct(Id.GetId(lstData));
+                AddEditPackageProduct form = new AddEditPackageProduct(Types[2], mainId);
                 form.ShowDialog();
                 ListProducts(false);
+            }
+            if (views.Last() == "product supplies" || views.Last() == "package product supplies")
+            {
+                AddEditPackageProduct form = new AddEditPackageProduct(Types[2], mainId);
+                form.ShowDialog();
+                if (views.Last() == "product supplies") ListProductSuppliers(false);
+                if (views.Last() == "package product supplies") ListPackageProductSuppliers(false, true);
             }
         }
 
@@ -385,28 +398,26 @@ namespace ThreadedProject2
                 }
                 if (views.Last() == "products")
                 {
-                    Form form = new AddEditPackageProduct(Id.GetId(lstData));
+                    AddEditPackageProduct form = new AddEditPackageProduct(Types[0], Id.GetId(lstData));
                     form.ShowDialog();
                     ListProducts(false);
                 }
-                if (views.Last() == "product supplies")
+                if (views.Last() == "product supplies" || views.Last() == "package product supplies")
                 {
-                    Form form = new AddEditPackageProduct(Id.GetId(lstData));
-                    //TODO: Add this to second form to allow more dynamic editing
-                    // form.type = "product supplies";
+                    AddEditPackageProduct form = new AddEditPackageProduct(Types[2], Id.GetId(lstData));
                     form.ShowDialog();
-                    ListProducts(false);
+                    if (views.Last() == "product supplies") ListProductSuppliers(false);
+                    if (views.Last() == "package product supplies") ListPackageProductSuppliers(false, true);
                 }
                 
                 if (views.Last() == "supplier contacts")
                 {
-
+                    Form form = new AddEditSupplierContact(Id.GetId(lstData));
+                    form.ShowDialog();
                 }
                 if(views.Last() == "suppliers")
                 {
-                    SupplierAddModifyForm form = new SupplierAddModifyForm();
-                    List<Supplier> s = DB.Get.Suppliers();
-                    form.SetEditMode(s[lstData.SelectedIndex-1]);
+                    AddEditPackageProduct form = new AddEditPackageProduct(Types[1], Id.GetId(lstData));
                     form.ShowDialog();
                     ListSuppliers(false);
                 }
