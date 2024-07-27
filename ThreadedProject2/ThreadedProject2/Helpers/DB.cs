@@ -15,6 +15,7 @@ namespace ThreadedProject2.Helpers
         {
             static int supLastId = 0;
             static int packProdLastId = 0;
+            static int packLastId;
 
             /// <summary>
             /// Get packages
@@ -49,7 +50,7 @@ namespace ThreadedProject2.Helpers
                 {
                     if (id == -1)
                     {
-                        var products = context.Products.Select(p => p);
+                        var products = context.Products.Select(p => p).OrderBy(p => p.ProductId);
                         return products.ToList();
                     }
                     else
@@ -125,7 +126,7 @@ namespace ThreadedProject2.Helpers
             /// <param name="lstData">Listbox lstdata to get Package ID</param>
             /// <param name="useLast">To show all Package product supplies, false, else to reference only previous package, true. references the id of the previous menu selection</param>
             /// <returns></returns>
-            static public List<ProductsSupplier> PackageProductSupplies(ListBox lstData, bool useLast = false)
+            static public (List<ProductsSupplier>, int) PackageProductSupplies(ListBox lstData, bool useLast = false)
             {
                 using (Models.TravelExpertsContext context = new TravelExpertsContext())
                 {
@@ -140,7 +141,7 @@ namespace ThreadedProject2.Helpers
                                      .Include(p => p.ProductSuppliers)
                                      .SingleOrDefault(p => p.PackageId == (useLast ? packProdLastId : packId));
 
-                    return package.ProductSuppliers.ToList();
+                    return (package.ProductSuppliers.ToList(), packProdLastId);
                 }
 
             }

@@ -405,6 +405,7 @@
             Text = "AddEditSupplierContact";
             grpSCDetails.ResumeLayout(false);
             grpSCDetails.PerformLayout();
+            Load += AddEditSupplierContact_Load;
             ResumeLayout(false);
         }
 

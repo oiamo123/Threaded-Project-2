@@ -27,7 +27,7 @@ namespace ThreadedProject2
         {
             if (id != 0)
             {
-                SupplierContact contact = DB.Get.SupplierContacts(id).FirstOrDefault();
+                SupplierContact contact = context.SupplierContacts.Where(sc => sc.SupplierContactId == id).FirstOrDefault();
                 UpdateTextBoxes(contact);
             }
         }
