@@ -69,15 +69,17 @@ namespace ThreadedProject2
                     PkgAgencyCommission = Math.Round(Decimal.Parse(txtAgencyComission.Text), 2)
                 };
 
-                context.Add(package);
+                context.Packages.Add(package);
 
                 clearTextboxes();
+
+                MessageBox.Show("Package successfully added. Close to see new changes");
             } 
             else if (!isAdd && isValid())
             {
                 try
                 {
-                    //Package package = dbGet.GetPackages(id).FirstOrDefault();
+                    // get package
                     Package package = context.Packages.FirstOrDefault(p => p.PackageId == id);
                     if (package == null) throw new Exception("There was an error accessing the database");
 
@@ -97,9 +99,9 @@ namespace ThreadedProject2
                 {
                     MessageBox.Show(ex.Message, "Sql Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                context.SaveChanges();
-
-            }  
+            }
+            
+            context.SaveChanges();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -114,12 +116,12 @@ namespace ThreadedProject2
 
             try
             {
-                if (Validation.IsSentence(txtName.Text, "Name") &&
-                    Validation.IsDecimal(txtPackagePrice.Text, "Package price") &&
-                Validation.IsDecimal(txtAgencyComission.Text, "Agency commission") &&
-                Validation.CheckDate(dtpStart, "Start date") &&
-                Validation.CheckDate(dtpEnd, "End date") && 
-                Validation.IsSentence(txtDescription.Text, "Description"))      
+                if (Validation.IsSentence(txtName) &&
+                    Validation.IsDecimal(txtPackagePrice) &&
+                Validation.IsDecimal(txtAgencyComission) &&
+                Validation.CheckDate(dtpStart) &&
+                Validation.CheckDate(dtpEnd) && 
+                Validation.IsSentence(txtDescription))      
                 {
                     if (dtpStart.Value > dtpEnd.Value) throw new Exception("End date cannot be greater than start date");
                 }

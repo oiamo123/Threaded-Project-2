@@ -133,6 +133,8 @@
             cboProduct.Name = "cboProduct";
             cboProduct.Size = new Size(317, 29);
             cboProduct.TabIndex = 0;
+            cboProduct.Tag = "Product";
+            cboProduct.KeyPress += cboProduct_KeyPress;
             // 
             // cboSupplier
             // 
@@ -143,6 +145,8 @@
             cboSupplier.Name = "cboSupplier";
             cboSupplier.Size = new Size(317, 29);
             cboSupplier.TabIndex = 3;
+            cboSupplier.Tag = "Supplier";
+            cboSupplier.KeyPress += cboSupplier_KeyPress;
             // 
             // lblSupplier
             // 

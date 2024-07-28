@@ -1,4 +1,5 @@
-﻿using ThreadedProject2.Helpers;
+﻿using Microsoft.EntityFrameworkCore;
+using ThreadedProject2.Helpers;
 using ThreadedProject2.Models;
 
 namespace ThreadedProject2
@@ -17,13 +18,16 @@ namespace ThreadedProject2
         // listbox data
         private ListBox lstData;
 
-        public AddEditPackageProduct(List<string> views, bool isAdd, ListBox lstData)
+        private int lastId;
+
+        public AddEditPackageProduct(List<string> views, bool isAdd, ListBox lstData, int lastId)
         {
             InitializeComponent();
             this.views = views;
             this.isAdd = isAdd;
             this.context = new TravelExpertsContext();
             this.lstData = lstData;
+            this.lastId = lastId;
         }
 
         // on load, set inputs for correct view ie "add product", only allow text input and disable supplier
@@ -157,42 +161,38 @@ namespace ThreadedProject2
         {
             if (views.Last() == "product supplies" || views.Last() == "package product supplies")
             {
-                // inititiate products and supplier
                 Product product;
                 Supplier supplier;
 
-                // if txtProduct/txtSupplier are visible, add a new product and/or supplier
-                // otherwise cbo is being used and product/supplier already exists
-                if (txtProduct.Visible == true)
+                if (txtProduct.Visible)
                 {
-                    AddProduct(); // add new product
-                    product = context.Products.OrderBy(p => p.ProductId).Last(); // get new added product
+                    AddProduct();
+                    product = context.Products.OrderByDescending(p => p.ProductId).FirstOrDefault(); // Get the newly added product
                 }
                 else
                 {
-                    product = context.Products.Where(p => p.ProdName == cboProduct.SelectedItem).FirstOrDefault();
+                    product = context.Products.FirstOrDefault(p => p.ProdName == cboProduct.SelectedItem.ToString());
                 }
 
-                if (txtSupplier.Visible == true)
+                if (txtSupplier.Visible)
                 {
-                    AddSupplier(); // add new supplier
-                    supplier = context.Suppliers.OrderBy(s => s.SupplierId).Last(); // get new added supplier
+                    AddSupplier();
+                    supplier = context.Suppliers.OrderByDescending(s => s.SupplierId).FirstOrDefault(); // Get the newly added supplier
                 }
                 else
                 {
-                    supplier = context.Suppliers.Where(s => s.SupName == cboSupplier.SelectedItem).FirstOrDefault();
+                    supplier = context.Suppliers.FirstOrDefault(s => s.SupName == cboSupplier.SelectedItem.ToString());
                 }
 
                 if (isAdd)
                 {
-                    // productSupply, query for existing product supply before adding a new one
                     ProductsSupplier prodSupply;
-                    ProductsSupplier existingProdSupply = context.ProductsSuppliers.Where(ps => ps.Supplier == supplier && ps.Product == product).FirstOrDefault();
+                    var existingProdSupply = context.ProductsSuppliers
+                        .FirstOrDefault(ps => ps.SupplierId == supplier.SupplierId && ps.ProductId == product.ProductId);
 
-                    // if productsupply doesn't already exist, create a new one
                     if (existingProdSupply == null)
                     {
-                        prodSupply = new ProductsSupplier()
+                        prodSupply = new ProductsSupplier
                         {
                             Product = product,
                             Supplier = supplier,
@@ -208,29 +208,45 @@ namespace ThreadedProject2
                         prodSupply = existingProdSupply;
                     }
 
-                    // if view is package product supplies, add product supply to package product supplies and to product supplies
                     if (views.Last() == "package product supplies")
                     {
-                        (List<ProductsSupplier> prodSuppliers, int packageId) = DB.Get.PackageProductSupplies(lstData, true);
-                        Package package = context.Packages.Where(p => p.PackageId == packageId).FirstOrDefault();
-                        if (!package.ProductSuppliers.Any(ps => ps == prodSupply)) prodSupply.Packages.Add(package);
-                        if (!context.ProductsSuppliers.Any(ps => ps == prodSupply)) package.ProductSuppliers.Add(prodSupply);
-                    }    
+                        var prodSuppliers = DB.Get.PackageProductSupplies(lastId);
+
+                        var package = context.Packages
+                            .Include(p => p.ProductSuppliers) // Ensure related data is loaded
+                            .FirstOrDefault(p => p.PackageId == lastId);
+
+                        if (package == null)
+                        {
+                            // Handle the case where the package is not found
+                            return;
+                        }
+
+                        if (!package.ProductSuppliers.Any(ps => ps.SupplierId == supplier.SupplierId && ps.ProductId == product.ProductId))
+                        {
+                            package.ProductSuppliers.Add(prodSupply);
+                        }
+
+                        context.SaveChanges();
+                    }
                 }
-                // if form is not isAdd, update product supply
                 else
                 {
-                    var prodSupply = DB.Get.ProductSuppliers(Id.GetId(lstData)).FirstOrDefault();
+                    var prodSupply = context.ProductsSuppliers.Find(Id.GetId(lstData));
 
-                    prodSupply.Supplier = supplier;
-                    prodSupply.SupplierId = supplier.SupplierId;
-                    prodSupply.Product = product;
-                    prodSupply.ProductId = product.ProductId;
+                    if (prodSupply != null)
+                    {
+                        prodSupply.Supplier = supplier;
+                        prodSupply.SupplierId = supplier.SupplierId;
+                        prodSupply.Product = product;
+                        prodSupply.ProductId = product.ProductId;
 
-                    context.ProductsSuppliers.Update(prodSupply);
+                        context.ProductsSuppliers.Update(prodSupply);
+                        context.SaveChanges();
+                    }
                 }
 
-                MessageBox.Show("Task completed succesfully. Exit to see new changes.");
+                MessageBox.Show("Task completed successfully. Exit to see new changes.");
             }
             // if view is product, add new product
             else if (views.Last() == "products")
@@ -270,47 +286,44 @@ namespace ThreadedProject2
             textBox.Visible = !isVisible;
             comboBox.Visible = isVisible;
         }
-        
+
         // adds a new product
         private void AddProduct()
         {
-            if (Validation.IsSentence(txtProduct.Text, "Product"))
+            if (Validation.IsSentence(txtProduct))
             {
-                string name = "";
+                string name = StringFormats.FormatString(txtProduct.Text);
 
-                foreach (var str in txtProduct.Text.Split(" "))
-                {
-                    str.Trim();
-                    name += $@" {Char.ToUpper(str[0]) + str.Substring(1).ToLower()}";
-                }
-
-                var product = new Product()
+                var product = new Product
                 {
                     ProdName = name.Trim()
+                    // Do not set ProductId; let SQL Server handle it automatically
                 };
 
                 var products = DB.Get.Products();
 
                 if (!products.Any(p => p.ProdName.ToLower().Trim().Equals(product.ProdName.ToLower().Trim())))
                 {
-                    if (isAdd || txtProduct.Visible == true)
+                    if (isAdd || txtProduct.Visible)
                     {
-                        context.Products.Add(product); // if isAdd, add the supplier else update the supplier
+                        context.Products.Add(product); // Add product without setting ProductId
                     }
                     else
                     {
-                        product = context.Products.Where(p => p.ProdName == GetSelectedProductName()).FirstOrDefault();
-                        product.ProdName = name.Trim();
-                        context.Products.Update(product);
+                        product = context.Products.FirstOrDefault(p => p.ProdName == GetSelectedProductName());
+                        if (product != null)
+                        {
+                            product.ProdName = name.Trim();
+                            context.Products.Update(product);
+                        }
                     }
-                    
-                    context.SaveChanges();
+
+                    context.SaveChanges(); // Save changes after adding or updating
                 }
                 else
                 {
                     MessageBox.Show("This product already exists");
                 }
-
             }
         }
 
@@ -318,32 +331,19 @@ namespace ThreadedProject2
         private void AddSupplier()
         {
             // validate supplier textbox
-            if (Validation.IsSentence(txtSupplier.Text, "Suppliers"))
+            if (Validation.IsSentence(txtSupplier))
             {
-                string name = "";
-
-                // reformat string from "company name" to "Company Name"
-                foreach (var str in txtSupplier.Text.Split(" "))
-                {
-                    str.Trim();
-                    name += $@" {Char.ToUpper(str[0]) + str.Substring(1).ToLower()}";
-                }
+                string name = StringFormats.FormatString(txtSupplier.Text);
 
                 Supplier supplier;
 
                 // if is add, add new product, else update supplier data
-                if (isAdd)
+
+                supplier = new Supplier()
                 {
-                    supplier = new Supplier()
-                    {
-                        SupName = name.Trim()
-                    };
-                }
-                else
-                {
-                    supplier = DB.Get.Suppliers(Id.GetId(lstData)).FirstOrDefault();
-                    supplier.SupName = txtSupplier.Text;
-                }
+                    SupplierId = context.Suppliers.OrderByDescending(p => p.SupplierId).FirstOrDefault().SupplierId + 1,
+                    SupName = name.Trim()
+                };
 
                 var suppliers = DB.Get.Suppliers();
 
@@ -368,6 +368,16 @@ namespace ThreadedProject2
                     MessageBox.Show("This supplier already exists");
                 }
             }
+        }
+
+        private void cboProduct_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void cboSupplier_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

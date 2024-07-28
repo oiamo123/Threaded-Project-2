@@ -16,6 +16,9 @@ namespace ThreadedProject2
 
         List<string> views = new List<string>();
 
+        private int LastProductSupplierId = 0;
+        private int LastPackageId = 0;
+
         public MainForm()
         {
             InitializeComponent();
@@ -100,15 +103,27 @@ namespace ThreadedProject2
         private void ListSupplierContact(bool val, bool useLast = false)
         {
             int id = -1;
-            if (views.Last().Equals("product supplies") || views.Last().Equals("package product supplies"))
-                id = DB.Get.ProductSuppliers(Id.GetId(lstData)).FirstOrDefault().SupplierId;
-            if (views.Last().Equals("suppliers")) id = Id.GetId(lstData);
+
+            if (views.Last().Equals("suppliers")) 
+            {
+                id = Id.GetId(lstData);
+            }
+            else if (views.First().Equals("suppliers"))
+            {
+                id = DB.Get.Suppliers(LastProductSupplierId).FirstOrDefault().SupplierId;
+            }
+            else
+            { 
+                id = DB.Get.ProductSuppliers(useLast ? LastProductSupplierId : Id.GetId(lstData)).FirstOrDefault().SupplierId;
+            }
 
             if (val) views.Add("supplier contacts");
 
+            List<SupplierContact> supplierContacts = DB.Get.SupplierContacts(id);
+
             UpdateListBox(
                 $"{"Id".PadRight(6)}{"First Name".PadRight(15)}{"LastName".PadRight(15)}{"Email".PadRight(33)}{"Fax".PadRight(12)}{"Address".PadRight(50)}",
-                StringFormats.FormatSupplierContacts, DB.Get.SupplierContacts(id, useLast));
+                StringFormats.FormatSupplierContacts, supplierContacts);
         }
 
         // List packages product supplies. Calls Update list box
@@ -116,7 +131,7 @@ namespace ThreadedProject2
         private void ListPackageProductSuppliers(bool val, bool useLast = false)
         {
             if (val) views.Add("package product supplies");
-            (List<ProductsSupplier> prodSuppliers, int id) = DB.Get.PackageProductSupplies(lstData, useLast);
+            List<ProductsSupplier> prodSuppliers = DB.Get.PackageProductSupplies(useLast ? LastPackageId : Id.GetId(lstData));
 
             UpdateListBox($"{"Id".PadRight(6)}{"Product".PadRight(21)}{"Supplier"}",
                 StringFormats.FormatProductsSupplier, prodSuppliers);
@@ -166,10 +181,12 @@ namespace ThreadedProject2
                     throw new Exception("First row cannot be selected");
                 if (views.Last().Equals("packages") && lstData.SelectedItem != null)
                 {
+                    LastPackageId = Id.GetId(lstData);
                     ListPackageProductSuppliers(true);
                 }
                 else
                 {
+                    LastProductSupplierId = Id.GetId(lstData);
                     ListSupplierContact(true);
                 }
 
@@ -219,9 +236,20 @@ namespace ThreadedProject2
             {
                 if (views.Last().Equals("packages"))
                 {
-                    var package = context.Packages.Where(p => p.PackageId == Id.GetId(lstData)).FirstOrDefault();
+                    var package = context.Packages.Include(p => p.ProductSuppliers).Where(p => p.PackageId == Id.GetId(lstData));
+                    var productSupplies = DB.Get.ProductSuppliers();
 
-                    DB.Remove.Package(package.PackageId);
+                    foreach (var ps in productSupplies)
+                    {
+                        if (package.FirstOrDefault().ProductSuppliers.Any(pps => pps == ps))
+                        {
+                            ps.Packages.Remove(package.FirstOrDefault());
+                        }
+                    }
+
+                    DB.Remove.PackageProductSupply(context, package.ToList());
+
+                    DB.Remove.Package(package.FirstOrDefault());
 
                     ListPackages(false);
                 }
@@ -242,7 +270,7 @@ namespace ThreadedProject2
                         .Include(p => p.ProductSuppliers.Where(ps => ps.ProductId == product.ProductId)).ToList();
 
                     string warningMessage = "Are you sure you want to continue?";
-                    if (productSupplies.Count() > 0 || packageProductSupplies.Count() > 0)
+                    if (productSupplies.Count() > 0 || packageProductSupplies.Any(p => p.ProductSuppliers.Count() > 0))
                     {
                         if (packageProductSupplies.Any(pss => pss.ProductSuppliers.Count() > 0))
                             warningMessage += " This product is associated with a packages product supplies.";
@@ -272,7 +300,7 @@ namespace ThreadedProject2
                     DialogResult supRes = DialogResult.None;
 
                     // get supplier
-                    List<Supplier> supplier = DB.Get.Suppliers(Id.GetId(lstData)).ToList();
+                    List<Supplier> supplier = DB.Get.Suppliers(Id.GetId(lstData));
 
                         // get supplier contacts
                         List<SupplierContact> supplierContacts = context.SupplierContacts
@@ -386,24 +414,25 @@ namespace ThreadedProject2
             }
             if (views.Last() == "supplier contacts")
             {
-                Form form = new AddEditSupplierContact();
+                Form form = new AddEditSupplierContact(true, LastProductSupplierId);
                 form.ShowDialog();
+                ListSupplierContact(false, true);
             }
             if (views.Last() == "suppliers")
             {
-                AddEditPackageProduct form = new AddEditPackageProduct(views, true, lstData);
+                AddEditPackageProduct form = new AddEditPackageProduct(views, true, lstData, LastPackageId);
                 form.ShowDialog();
                 ListSuppliers(false);
             }
             if (views.Last() == "products")
             {
-                AddEditPackageProduct form = new AddEditPackageProduct(views, true, lstData);
+                AddEditPackageProduct form = new AddEditPackageProduct(views, true, lstData, LastPackageId);
                 form.ShowDialog();
                 ListProducts(false);
             }
             if (views.Last() == "product supplies" || views.Last() == "package product supplies")
             {
-                AddEditPackageProduct form = new AddEditPackageProduct(views, true, lstData);
+                AddEditPackageProduct form = new AddEditPackageProduct(views, true, lstData, LastPackageId);
                 form.ShowDialog();
                 if (views.Last() == "product supplies") ListProductSuppliers(false);
                 if (views.Last() == "package product supplies") ListPackageProductSuppliers(false, true);
@@ -423,16 +452,15 @@ namespace ThreadedProject2
                     form.ShowDialog();
                     ListPackages(false);
                 }
-
                 if (views.Last() == "products")
                 {
-                    AddEditPackageProduct form = new AddEditPackageProduct(views, false, lstData);
+                    AddEditPackageProduct form = new AddEditPackageProduct(views, false, lstData, LastPackageId);
                     form.ShowDialog();
                     ListProducts(false);
                 }
                 if (views.Last() == "product supplies" || views.Last() == "package product supplies")
                 { 
-                   AddEditPackageProduct form = new AddEditPackageProduct(views, false, lstData);
+                   AddEditPackageProduct form = new AddEditPackageProduct(views, false, lstData, LastPackageId);
                    form.ShowDialog();
 
                     if (views.Last() == "product supplies") ListProductSuppliers(false);
@@ -440,12 +468,13 @@ namespace ThreadedProject2
                 }
                 if (views.Last() == "supplier contacts")
                 {
-                    Form form = new AddEditSupplierContact(Id.GetId(lstData));
+                    Form form = new AddEditSupplierContact(false, LastProductSupplierId, Id.GetId(lstData));
                     form.ShowDialog();
+                    ListSupplierContact(false, true);
                 }
                 if(views.Last() == "suppliers")
                 {
-                    AddEditPackageProduct form = new AddEditPackageProduct(views, false, lstData);
+                    AddEditPackageProduct form = new AddEditPackageProduct(views, false, lstData, LastPackageId);
                     form.ShowDialog();
                     ListSuppliers(false);
                 }

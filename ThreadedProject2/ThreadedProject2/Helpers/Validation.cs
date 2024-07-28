@@ -5,6 +5,7 @@
  */
 
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ThreadedProject2
 {
@@ -16,16 +17,16 @@ namespace ThreadedProject2
         /// <param name="value">Value to be evaluated</param>
         /// <param name="name">Name of field for exceptions</param>
         /// <returns></returns>
-        static public bool IsDecimal(string value, string name)
+        static public bool IsDecimal(TextBox txt)
         {
             bool success = true;
             try
             {
                 // checks if value is both a decimal and not empty
-                if (value == "") throw new Exception($"{name} cannot be left empty");
+                if (txt.Text == "") throw new Exception($"{txt.Tag} cannot be left empty");
 
-                if (!Decimal.TryParse(value, out decimal v))
-                    throw new Exception($"{name} is invalid. Can only contain 0-9 and '.'");
+                if (!Decimal.TryParse(txt.Text, out decimal v))
+                    throw new Exception($"{txt.Tag} is invalid. Can only contain 0-9 and '.'");
             }
             catch (Exception ex)
             {
@@ -42,16 +43,16 @@ namespace ThreadedProject2
         /// <param name="word">Value to be evaluated</param>
         /// <param name="name">Name of field for exceptions</param>
         /// <returns></returns>
-        static public bool IsWord(string word, string name)
+        static public bool IsWord(TextBox txt)
         {
             bool success = true;
             try
             {
                 // Checks if value is blank and that it contains only letters
                 Regex reg = new Regex("(^[a-zA-Z]+)$");
-                if (word == "") throw new Exception($"{name} code cannot be left empty");
-                if (!reg.IsMatch(word))
-                    throw new Exception($"{name} code is Invalid. Can only contain letters");
+                if (txt.Text == "") throw new Exception($"{txt.Tag} cannot be left empty");
+                if (!reg.IsMatch(txt.Text))
+                    throw new Exception($"{txt.Tag} is Invalid. Can only contain letters");
             }
             catch (Exception ex)
             {
@@ -68,16 +69,16 @@ namespace ThreadedProject2
         /// <param name="str">Value to be evaluated</param>
         /// <param name="name">Name of field for exceptions</param>
         /// <returns></returns>
-        static public bool IsSentence(string str, string name)
+        static public bool IsSentence(TextBox txt)
         {
             bool success = true;
             try
             {
                 // validates that sentence does not contain multiple spaces between words and has no numbers
-                Regex reg = new Regex("^([a-zA-Z]+\\s)*[a-zA-Z]+$");
-                if (str == "") throw new Exception($"{name} cannot be empty");
-                if (!reg.IsMatch(str.TrimEnd()))
-                    throw new Exception($"{name} is invalid. Can only contain letters and spaces!");
+                Regex reg = new Regex("^([a-zA-Z]+([-.]?[a-zA-Z]+)*[\\s&-]?)*[a-zA-Z]+([-.][a-zA-Z]+)*$");
+                if (txt.Text == "") throw new Exception($"{txt.Tag} cannot be empty");
+                if (!reg.IsMatch(txt.Text.TrimEnd()))
+                    throw new Exception($"{txt.Tag} is invalid. Can only contain letters and spaces!");
             }
             catch (System.FormatException)
             {
@@ -98,12 +99,12 @@ namespace ThreadedProject2
         /// <param name="dtp">DateTimePicker to compare the date to</param>
         /// <param name="name">name ie "Date" for error messages</param>
         /// <returns></returns>
-        static public bool CheckDate(DateTimePicker dtp, string name)
+        static public bool CheckDate(DateTimePicker dtp)
         {
             bool success = true;
             try
             {
-                if (dtp.Value < DateTime.Now) throw new Exception($"{name} cannot be in the past");
+                if (dtp.Value < DateTime.Now) throw new Exception($"{dtp.Tag} cannot be in the past");
             }
             catch (Exception ex)
             {
@@ -239,6 +240,131 @@ namespace ThreadedProject2
                 MessageBox.Show($"{textBox.Tag} cannot exceed {maxLength} characters.");
                 textBox.SelectAll();
                 textBox.Focus();
+            }
+
+            return isValid;
+        }
+
+        public static bool IsAddress(TextBox txt)
+        {
+            bool isValid = true;
+            try
+            {
+                Regex reg = new Regex("^\\d+(?:\\s\\d+)?\\s[A-Za-z]+(?:\\s[A-Za-z]+)*$");
+                if (txt.Text == "") throw new Exception($"Address cannot be left empty");
+                if (!reg.IsMatch(txt.Text)) throw new Exception("Address is invalid must be in format of 123 main st");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        public static bool IsProvince(TextBox txt)
+        {
+            bool isValid = true;
+            try
+            {
+                Regex reg = new Regex("^[a-zA-Z][a-zA-Z]$");
+                if (txt.Text == "") throw new Exception($"Province/State cannot be left empty");
+                if (!reg.IsMatch(txt.Text)) throw new Exception($@"Province/state is invalid. Can only be two letters ie 'AB'");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        public static bool IsPostalCode(TextBox txt)
+        {
+            bool isValid = true;
+            try
+            {
+                Regex reg = new Regex("^\\w\\d\\w\\ ?\\d\\w\\d$");
+                Regex reg2 = new Regex("^\\d{5}$");
+                if (txt.Text == "") throw new Exception($"Postal code/Zip code cannot be left empty");
+                if (!reg.IsMatch(txt.Text) && !reg2.IsMatch(txt.Text)) throw new Exception($@"Postal code/ zip code is invalid. Must be in format A1A 1A1/A1A1A1 or 12345");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        public static bool IsPhoneNumber(TextBox txt)
+        {
+            bool isValid = true;
+            try
+            {
+                Regex reg = new Regex("^\\(?\\d{3}\\)?[\\s-]?\\d{3}[\\s-]?\\d{4}$");
+                if (txt.Text == "") throw new Exception($"{txt.Tag} cannot be left empty");
+                if (!reg.IsMatch(txt.Text)) throw new Exception($"{txt.Tag} is invalid. Must be in format 123-123-1234 or \n 123 123 1234 or (123) 123-1234");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        public static bool IsEmail(TextBox txt)
+        {
+            bool isValid = true;
+            try
+            {
+                Regex reg = new Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+                if (txt.Text == "") throw new Exception($"Email cannot be left empty");
+                if (!reg.IsMatch(txt.Text)) throw new Exception($"Email is invalid. Please enter a valid email in the format john.doe@example.com");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        public static bool IsURL(TextBox txt)
+        {
+            bool isValid = true;
+            try
+            {
+                Regex reg = new Regex("^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9\\-]+(\\.com|\\.ca|\\.net|\\.org|\\.co|\\.gov|\\.edu|\\.ca)$");
+                if (txt.Text == "") throw new Exception($"URL cannot be left empty");
+                if (!reg.IsMatch(txt.Text)) throw new Exception($"URL is invalid. mywebsite.com. You can also include https:// and 'www.'. Endings can include .com/.net/.co etc.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        public static bool ItemSelected(ComboBox cbo)
+        {
+            bool isValid = true;
+            try
+            {
+                if (cbo.SelectedItem == null) throw new Exception($"{cbo.Tag} must have a selected item");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                isValid = false;
             }
 
             return isValid;

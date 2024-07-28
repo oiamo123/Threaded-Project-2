@@ -13,9 +13,10 @@ namespace ThreadedProject2.Helpers
     {
         static public class Get
         {
-            static int supLastId = 0;
+            static int supConLastId = 0;
             static int packProdLastId = 0;
-            static int packLastId;
+            static int packLastId = 0;
+            static int supLastId = 0;
 
             /// <summary>
             /// Get packages
@@ -70,16 +71,17 @@ namespace ThreadedProject2.Helpers
             {
                 using (Models.TravelExpertsContext context = new TravelExpertsContext())
                 {
+                    List<Supplier> suppliers;
                     if (id == -1)
                     {
-                        var suppliers = context.Suppliers.Select(p => p).OrderBy(p => p.SupName);
-                        return suppliers.ToList();
+                        suppliers = context.Suppliers.Select(p => p).OrderBy(p => p.SupName).ToList();
                     }
                     else
                     {
-                        var suppliers = context.Suppliers.Where(p => p.SupplierId == id).OrderBy(p => p.SupName);
-                        return suppliers.ToList();
+                        suppliers = context.Suppliers.Where(p => p.SupplierId == id).ToList();
                     }
+
+                    return suppliers;
                 }
             }
 
@@ -111,12 +113,13 @@ namespace ThreadedProject2.Helpers
             /// <param name="lstData">ListBox lstdata to get supplier id</param>
             /// <param name="useLast">To show all supplier contacts, false, else to reference only previous supplier, true reference the id of the previous menu selection</param>
             /// <returns></returns>
-            static public List<SupplierContact> SupplierContacts(int id, bool useLast = false)
+            static public List<SupplierContact> SupplierContacts(int id)
             {
                 using (Models.TravelExpertsContext context = new TravelExpertsContext())
                 {
-                    if (!useLast) supLastId = id;
-                    return context.SupplierContacts.Where(p => p.SupplierId == (useLast ? supLastId : id)).ToList();
+                    var supplierContacts = context.SupplierContacts.Where(p => p.SupplierId == id).ToList();
+
+                    return supplierContacts;
                 }
             }
 
@@ -126,22 +129,16 @@ namespace ThreadedProject2.Helpers
             /// <param name="lstData">Listbox lstdata to get Package ID</param>
             /// <param name="useLast">To show all Package product supplies, false, else to reference only previous package, true. references the id of the previous menu selection</param>
             /// <returns></returns>
-            static public (List<ProductsSupplier>, int) PackageProductSupplies(ListBox lstData, bool useLast = false)
+            static public List<ProductsSupplier> PackageProductSupplies(int id)
             {
                 using (Models.TravelExpertsContext context = new TravelExpertsContext())
                 {
-                    int packId = 0;
-                    if (!useLast)
-                    {
-                        packId = Id.GetId(lstData);
-                        packProdLastId = packId;
-                    }
 
                     var package = context.Packages
                                      .Include(p => p.ProductSuppliers)
-                                     .SingleOrDefault(p => p.PackageId == (useLast ? packProdLastId : packId));
+                                     .SingleOrDefault(p => p.PackageId == id);
 
-                    return (package.ProductSuppliers.ToList(), packProdLastId);
+                    return package.ProductSuppliers.ToList();
                 }
 
             }
@@ -149,11 +146,10 @@ namespace ThreadedProject2.Helpers
 
         public class Remove
         {
-            static public void Package(int id)
+            static public void Package(Package package)
             {
                 using (Models.TravelExpertsContext context = new Models.TravelExpertsContext())
                 {
-                    Models.Package package = DB.Get.Packages(id).FirstOrDefault();
                     context.Packages.Remove(package);
                     context.SaveChanges();
                 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
+
 namespace ThreadedProject2.Models;
 
 public partial class TravelExpertsContext : DbContext
@@ -15,6 +15,8 @@ public partial class TravelExpertsContext : DbContext
     {
     }
 
+    public virtual DbSet<Affiliation> Affiliations { get; set; }
+
     public virtual DbSet<Package> Packages { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
@@ -26,10 +28,18 @@ public partial class TravelExpertsContext : DbContext
     public virtual DbSet<SupplierContact> SupplierContacts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["TravelExperts"].ConnectionString);
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-EIT06H1F\\SQLEXPRESS;Initial Catalog=TravelExperts;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Affiliation>(entity =>
+        {
+            entity.HasKey(e => e.AffilitationId)
+                .HasName("aaaaaAffiliations_PK")
+                .IsClustered(false);
+        });
+
         modelBuilder.Entity<Package>(entity =>
         {
             entity.HasKey(e => e.PackageId)
@@ -96,6 +106,8 @@ public partial class TravelExpertsContext : DbContext
 
             entity.Property(e => e.SupplierContactId).ValueGeneratedNever();
             entity.Property(e => e.SupplierId).HasDefaultValue(0);
+
+            entity.HasOne(d => d.Affiliation).WithMany(p => p.SupplierContacts).HasConstraintName("SupplierContacts_FK00");
 
             entity.HasOne(d => d.Supplier).WithMany(p => p.SupplierContacts).HasConstraintName("SupplierContacts_FK01");
         });

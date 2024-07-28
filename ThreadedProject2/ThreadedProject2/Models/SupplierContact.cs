@@ -55,6 +55,10 @@ public partial class SupplierContact
 
     public int? SupplierId { get; set; }
 
+    [ForeignKey("AffiliationId")]
+    [InverseProperty("SupplierContacts")]
+    public virtual Affiliation? Affiliation { get; set; }
+
     [ForeignKey("SupplierId")]
     [InverseProperty("SupplierContacts")]
     public virtual Supplier? Supplier { get; set; }

@@ -73,6 +73,29 @@ namespace ThreadedProject2
                 $"{(i.SupConFax ??= "Unavailable").PadRight(12)}" +
                 $"{($"{i.SupConAddress ??= ""} {i.SupConPostal ??= ""} {i.SupConCity ??= ""}").PadRight(50)}";
         }
-        
+
+        static public string FormatString(string str)
+        {
+            string str2 = "";
+
+            foreach (var word in str.Split(" "))
+            {
+                str2 += $@" {Char.ToUpper(word[0]) + word.Substring(1).ToLower()}";
+            }
+
+            return str2.Trim();
+        }
+
+        static public string FormatPhone(string str)
+        {
+            string numbers = "";
+
+            foreach (char c in str.ToCharArray())
+            {
+                if (Char.IsDigit(c)) numbers += c;
+            }
+
+            return numbers.Trim();
+        }
     }
 }
