@@ -164,7 +164,14 @@ namespace ThreadedProject2.Helpers
                         context.ProductsSuppliers.Remove(ps);
                     }
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+                    {
+                        MessageBox.Show("This product supplier is currently assosciated with a booking. At this time you cannot remove it", "Database Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
 
@@ -176,7 +183,14 @@ namespace ThreadedProject2.Helpers
                     {
                         context.Suppliers.Remove(s);
                     }
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+                    {
+                        MessageBox.Show("This supplier is currently assosciated with a booking. At this time you cannot remove it", "Database Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
 
@@ -186,7 +200,14 @@ namespace ThreadedProject2.Helpers
                 {
                     var product = context.Products.Where(p => p.ProductId == id).FirstOrDefault();
                     context.Products.Remove(product);
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+                    {
+                        MessageBox.Show("This product is currently assosciated with a booking. At this time you cannot remove it", "Database Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
 
@@ -203,7 +224,14 @@ namespace ThreadedProject2.Helpers
                         }
                     }
                 }
+                try
+                {
                     context.SaveChanges();
+                }
+                catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+                {
+                    MessageBox.Show("This package product supply is currently assosciated with a booking. At this time you cannot remove it", "Database Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
             static public void SupplierContacts(List<SupplierContact> supplierContacts)
