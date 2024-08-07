@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ThreadedProject2.Models;
 
+// Author: Gavin
+
 namespace ThreadedProject2.Helpers
 {
     public class DB
@@ -146,15 +148,30 @@ namespace ThreadedProject2.Helpers
 
         public class Remove
         {
+            /// <summary>
+            /// Removes package
+            /// </summary>
+            /// <param name="package">package to remove</param>
             static public void Package(Package package)
             {
-                using (Models.TravelExpertsContext context = new Models.TravelExpertsContext())
+                try
                 {
-                    context.Packages.Remove(package);
-                    context.SaveChanges();
+                    using (Models.TravelExpertsContext context = new Models.TravelExpertsContext())
+                    {
+                        context.Packages.Remove(package);
+                        context.SaveChanges();
+                    }
+                }
+                catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+                {
+                    MessageBox.Show("This package is currently associated with a booking. At this time you are unable to remove it.");
                 }
             }
 
+            /// <summary>
+            /// Removes Product Supplies
+            /// </summary>
+            /// <param name="productSuppliers">List of product suppliers to remove</param>
             static public void ProductSupplies(List<ProductsSupplier> productSuppliers)
             {
                 using (Models.TravelExpertsContext context = new Models.TravelExpertsContext())
@@ -175,6 +192,10 @@ namespace ThreadedProject2.Helpers
                 }
             }
 
+            /// <summary>
+            /// Removes Suppliers
+            /// </summary>
+            /// <param name="suppliers">List of Suppliers to remove</param>
             static public void Suppliers(List<Supplier> suppliers)
             {
                 using (Models.TravelExpertsContext context = new Models.TravelExpertsContext())
@@ -194,6 +215,10 @@ namespace ThreadedProject2.Helpers
                 }
             }
 
+            /// <summary>
+            /// Removes Products
+            /// </summary>
+            /// <param name="id">Product id to remove</param>
             static public void Products(int id)
             {
                 using (Models.TravelExpertsContext context = new Models.TravelExpertsContext())
@@ -211,29 +236,39 @@ namespace ThreadedProject2.Helpers
                 }
             }
 
+            /// <summary>
+            /// Removes package product supplies
+            /// </summary>
+            /// <param name="packages">List of package product supplies to remove</param>
             static public void PackageProductSupply(TravelExpertsContext context, List<Package> packages)
-            {
-
-                foreach (var package in packages)
-                {
-                    foreach (var ps in context.ProductsSuppliers)
-                    {   
-                        if (package.ProductSuppliers.Any(x => x.ProductSupplierId == ps.ProductSupplierId))
+            { 
+                
+                    foreach (var package in packages)
+                    {
+                        foreach (var ps in context.ProductsSuppliers)
                         {
-                            package.ProductSuppliers.Remove(ps);
+                            if (package.ProductSuppliers.Any(x => x.ProductSupplierId == ps.ProductSupplierId))
+                            {
+                                package.ProductSuppliers.Remove(ps);
+                            }
                         }
                     }
-                }
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (Microsoft.EntityFrameworkCore.DbUpdateException)
-                {
-                    MessageBox.Show("This package product supply is currently assosciated with a booking. At this time you cannot remove it", "Database Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+                    {
+                        MessageBox.Show("This package product supply is currently assosciated with a booking. At this time you cannot remove it", "Database Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                
+                    
             }
 
+            /// <summary>
+            /// Removes suppliers contacts
+            /// </summary>
+            /// <param name="supplierContacts">List of supplier contacts to remove</param>
             static public void SupplierContacts(List<SupplierContact> supplierContacts)
             {
                 using (Models.TravelExpertsContext context = new Models.TravelExpertsContext())

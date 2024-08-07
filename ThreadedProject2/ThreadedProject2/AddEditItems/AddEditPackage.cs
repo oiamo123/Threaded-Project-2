@@ -12,13 +12,16 @@ using System.Windows.Forms;
 using ThreadedProject2.Helpers;
 using ThreadedProject2.Models;
 
+// Author: Gavin
+
 namespace ThreadedProject2
 {
     public partial class AddEditPackage : Form
     {
+        // Variables
         Models.TravelExpertsContext context = new Models.TravelExpertsContext();
-        private int id { get; set; }
-        private bool isAdd { get; set; }
+        private int id { get; set; } // package id for if editing package
+        private bool isAdd { get; set; } // determines if adding a new package or editing a package
 
         public AddEditPackage(int i = -1)
         {
@@ -30,6 +33,7 @@ namespace ThreadedProject2
 
         private void AddEditPackage_Load(object sender, EventArgs e)
         {
+            // if id is not -1, load package data to edit info
             if (id != -1)
             {
                 Package? package = DB.Get.Packages(id).FirstOrDefault();
@@ -47,6 +51,9 @@ namespace ThreadedProject2
             clearTextboxes();
         }
 
+        /// <summary>
+        /// Clears text boxes
+        /// </summary>
         private void clearTextboxes()
         {
             txtAgencyComission.Text = "";
@@ -57,6 +64,7 @@ namespace ThreadedProject2
 
         private void btnAccept_Click(object sender, EventArgs e)
         {
+            // if is and and data is valid, add a new package
             if (isAdd && isValid())
             {
                 Package package = new Package()
@@ -75,6 +83,7 @@ namespace ThreadedProject2
 
                 MessageBox.Show("Package successfully added. Close to see new changes");
             } 
+            // if is not add, update package and validate data
             else if (!isAdd && isValid())
             {
                 try
@@ -109,6 +118,10 @@ namespace ThreadedProject2
             this.Close();
         }
 
+        /// <summary>
+        /// Checks if data is valid
+        /// </summary>
+        /// <returns></returns>
         private bool isValid()
         {
             Validation validation = new Validation();

@@ -11,33 +11,39 @@ using ThreadedProject2.Models;
 using ThreadedProject2.Helpers;
 using Microsoft.EntityFrameworkCore;
 
+// Author: Gavin and Sam
+
 namespace ThreadedProject2
 {
     public partial class AddEditSupplierContact : Form
     {
+        // Supplier Contact Variables
         TravelExpertsContext context = new TravelExpertsContext();
-        private int ContactId { get; set; }
-        private bool isAdd { get; set; }
-        private int lastId { get; set; }
+        private int ContactId { get; set; } // Supplier Contact Id for editing
+        private bool isAdd { get; set; } // Is add or is Edit
+        private int lastId { get; set; } // Id for Supplier
         SupplierContact contact;
 
-        public AddEditSupplierContact(bool isAdd, int lastId = 0, int id = 0)
+        public AddEditSupplierContact(int lastId = 0, int id = 0)
         {
             InitializeComponent();
             this.ContactId = id;
-            this.isAdd = isAdd;
+            this.isAdd = id == -1 ? false : true;
             this.lastId = lastId;
         }
 
         private void AddEditSupplierContact_Load(object sender, EventArgs e)
         {
+            // Change form text
             this.Text = isAdd ? "Add Contact" : "Edit Contact";
 
+            // Get supplier contact
             if (ContactId != 0)
             {
                 contact = context.SupplierContacts.Include(sc => sc.Affiliation).Where(sc => sc.SupplierContactId == ContactId).FirstOrDefault();
             }
 
+            // supplier contact for repetitive fields
             SupplierContact supplierContact = DB.Get.SupplierContacts(lastId).FirstOrDefault();
 
             if (supplierContact != null)
@@ -51,14 +57,20 @@ namespace ThreadedProject2
                 txtSCCompany.Text = supplierContact.SupConCompany;
             }
 
+            // if form is edit, update textboxes
             if (!isAdd)
             {
                 UpdateTextBoxes(contact);
             }
 
+            // load affiliations
             setAffiliation(contact);
         }
 
+        /// <summary>
+        /// To update textboxes
+        /// </summary>
+        /// <param name="contact">SupplierContact for add or null</param>
         private void UpdateTextBoxes(SupplierContact? contact = null)
         {
             txtSCFirstName.Text = contact?.SupConFirstName ?? "";
@@ -75,6 +87,10 @@ namespace ThreadedProject2
             txtSCFax.Text = contact?.SupConFax ?? "";
         }
 
+        /// <summary>
+        /// Checks if all text boxes are valid
+        /// </summary>
+        /// <returns></returns>
         private bool isValid()
         {
             bool success = false;
@@ -104,6 +120,10 @@ namespace ThreadedProject2
             return success;
         }
 
+        /// <summary>
+        /// Loads the affiliation group box info
+        /// </summary>
+        /// <param name="contact">SupplierContact to select supplier contact affiliation or default</param>
         private void setAffiliation(SupplierContact contact = null)
         {
             var affiliations = context.Affiliations;
@@ -119,10 +139,13 @@ namespace ThreadedProject2
 
         private void btnAccept_Click(object sender, EventArgs e)
         {
+            // check if data is valid
             if (isValid())
             {
+                // get all suppliers contacts using the SupplierId
                 List<SupplierContact> supplierContacts = DB.Get.SupplierContacts(lastId);
 
+                // if is add, create new contact and format strings else update supplier contact
                 if (isAdd)
                 {
                     SupplierContact contact = new SupplierContact()
@@ -140,7 +163,8 @@ namespace ThreadedProject2
                         SupConEmail = txtSCEmail.Text,
                         SupConUrl = txtSCURL.Text,
                         AffiliationId = cboAffiliation.SelectedItem.ToString(),
-                        SupplierId = lastId
+                        SupplierId = lastId,
+                        SupplierContactId = supplierContacts.OrderByDescending(sc => sc.SupplierContactId).First().SupplierContactId + 1
                     };
 
                     context.SupplierContacts.Add(contact);

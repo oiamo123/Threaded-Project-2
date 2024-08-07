@@ -1,11 +1,7 @@
-﻿/*
- * AUTHOR: GAVIN OIAMO
- * DATE: 2024/07/03
- * PURPOSE: CLASS FOR VALIDATION
- */
-
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using static System.Net.Mime.MediaTypeNames;
+
+// Author: Gavin, Skye, Samuel
 
 namespace ThreadedProject2
 {

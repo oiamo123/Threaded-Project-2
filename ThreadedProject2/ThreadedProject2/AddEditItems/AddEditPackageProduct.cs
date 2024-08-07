@@ -304,11 +304,7 @@ namespace ThreadedProject2
 
                 if (!products.Any(p => p.ProdName.ToLower().Trim().Equals(product.ProdName.ToLower().Trim())))
                 {
-                    if (isAdd || txtProduct.Visible)
-                    {
-                        context.Products.Add(product); // Add product without setting ProductId
-                    }
-                    else
+                    if (!isAdd)
                     {
                         product = context.Products.FirstOrDefault(p => p.ProdName == GetSelectedProductName());
                         if (product != null)
@@ -316,6 +312,10 @@ namespace ThreadedProject2
                             product.ProdName = name.Trim();
                             context.Products.Update(product);
                         }
+                    }
+                    else
+                    {
+                        context.Products.Add(product); // Add product without setting ProductId
                     }
 
                     context.SaveChanges(); // Save changes after adding or updating
@@ -350,15 +350,15 @@ namespace ThreadedProject2
                 // verify that supplier does not already exist
                 if (!suppliers.Any(s => s.SupName.ToLower().Trim().Equals(supplier.SupName.ToLower().Trim())))
                 {
-                    if (isAdd || txtSupplier.Visible == true)
-                    {
-                        context.Suppliers.Add(supplier); // if isAdd, add the supplier else update the supplier
-                    }
-                    else
+                    if (!isAdd)
                     {
                         supplier = context.Suppliers.Where(p => p.SupName == GetSelectedSupplierName()).FirstOrDefault();
                         supplier.SupName = name.Trim();
                         context.Suppliers.Update(supplier);
+                    }
+                    else
+                    {
+                        context.Suppliers.Add(supplier); // if isAdd, add the supplier else update the supplier
                     }
 
                     context.SaveChanges();

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using ThreadedProject2.Models;
 using ThreadedProject2.Helpers;
 
+// Author: Gavin
+
 namespace ThreadedProject2
 {
     internal class StringFormats
