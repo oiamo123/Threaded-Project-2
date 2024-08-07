@@ -9,6 +9,10 @@ namespace ThreadedProject2.Models
 {
     internal class SupplierDB
     {
+        /// <summary>
+        /// Get Suppliers
+        /// </summary>
+        /// <returns></returns>
         public static List<Supplier> GetSuppliers()
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
@@ -23,6 +27,12 @@ namespace ThreadedProject2.Models
                 }
             }
         }
+
+        /// <summary>
+        /// Get Supplier
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static Supplier? GetSupplier(int id)
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
@@ -30,6 +40,7 @@ namespace ThreadedProject2.Models
                 return db.Suppliers.Find(id);
             }
         }
+
         /// <summary>
         /// adds a new record to the Supplier table
         /// </summary>
@@ -46,6 +57,10 @@ namespace ThreadedProject2.Models
             }
         }
 
+        /// <summary>
+        /// Remove Supplier
+        /// </summary>
+        /// <param name="id"></param>
         public static void RemoveSupplier(int id)
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
@@ -59,6 +74,11 @@ namespace ThreadedProject2.Models
             }
         }
 
+        /// <summary>
+        /// Modify Supplier
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newSupplier"></param>
         public static void ModifySupplier(int id, Supplier newSupplier)
         {
             using (TravelExpertsContext db = new TravelExpertsContext())

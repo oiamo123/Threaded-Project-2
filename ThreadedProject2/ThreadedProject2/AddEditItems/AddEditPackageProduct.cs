@@ -20,6 +20,13 @@ namespace ThreadedProject2
 
         private int lastId;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="views"></param>
+        /// <param name="isAdd"></param>
+        /// <param name="lstData"></param>
+        /// <param name="lastId"></param>
         public AddEditPackageProduct(List<string> views, bool isAdd, ListBox lstData, int lastId)
         {
             InitializeComponent();
@@ -152,11 +159,21 @@ namespace ThreadedProject2
             }
         }
 
+        /// <summary>
+        /// Button Exit
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Button Accept
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAccept_Click(object sender, EventArgs e)
         {
             if (views.Last() == "product supplies" || views.Last() == "package product supplies")
@@ -164,6 +181,7 @@ namespace ThreadedProject2
                 Product product;
                 Supplier supplier;
 
+                //Check which product/supplier are visible
                 if (txtProduct.Visible)
                 {
                     AddProduct();
@@ -184,12 +202,14 @@ namespace ThreadedProject2
                     supplier = context.Suppliers.FirstOrDefault(s => s.SupName == cboSupplier.SelectedItem.ToString());
                 }
 
+                //Add productsupply
                 if (isAdd)
                 {
                     ProductsSupplier prodSupply;
                     var existingProdSupply = context.ProductsSuppliers
                         .FirstOrDefault(ps => ps.SupplierId == supplier.SupplierId && ps.ProductId == product.ProductId);
 
+                    //Product Supply doesnt exist yet
                     if (existingProdSupply == null)
                     {
                         prodSupply = new ProductsSupplier
@@ -203,6 +223,7 @@ namespace ThreadedProject2
                         context.ProductsSuppliers.Add(prodSupply);
                         context.SaveChanges();
                     }
+                    //Already exists
                     else
                     {
                         prodSupply = existingProdSupply;
@@ -222,6 +243,7 @@ namespace ThreadedProject2
                             return;
                         }
 
+                        //Add Product Supplier
                         if (!package.ProductSuppliers.Any(ps => ps.SupplierId == supplier.SupplierId && ps.ProductId == product.ProductId))
                         {
                             package.ProductSuppliers.Add(prodSupply);
@@ -370,11 +392,21 @@ namespace ThreadedProject2
             }
         }
 
+        /// <summary>
+        /// Product Keypress
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cboProduct_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;
         }
 
+        /// <summary>
+        /// Supplier Keypress
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cboSupplier_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;

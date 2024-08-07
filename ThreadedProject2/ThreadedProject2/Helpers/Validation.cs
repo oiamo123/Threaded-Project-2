@@ -241,6 +241,11 @@ namespace ThreadedProject2
             return isValid;
         }
 
+        /// <summary>
+        /// Regex Check for Proper Address
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <returns></returns>
         public static bool IsAddress(TextBox txt)
         {
             bool isValid = true;
@@ -258,7 +263,12 @@ namespace ThreadedProject2
 
             return isValid;
         }
-
+        
+        /// <summary>
+        /// Regex for a Correct ZZ Province Code 
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <returns></returns>
         public static bool IsProvince(TextBox txt)
         {
             bool isValid = true;
@@ -277,6 +287,11 @@ namespace ThreadedProject2
             return isValid;
         }
 
+        /// <summary>
+        /// Regex Check for correct Postal Code Format ZZZ-ZZZ
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <returns></returns>
         public static bool IsPostalCode(TextBox txt)
         {
             bool isValid = true;
@@ -296,6 +311,11 @@ namespace ThreadedProject2
             return isValid;
         }
 
+        /// <summary>
+        /// Regex check for a valid Phone Number 000-000-0000
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <returns></returns>
         public static bool IsPhoneNumber(TextBox txt)
         {
             bool isValid = true;
@@ -314,6 +334,11 @@ namespace ThreadedProject2
             return isValid;
         }
 
+        /// <summary>
+        /// Regex check for Valid Email example@email.com
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <returns></returns>
         public static bool IsEmail(TextBox txt)
         {
             bool isValid = true;
@@ -332,6 +357,11 @@ namespace ThreadedProject2
             return isValid;
         }
 
+        /// <summary>
+        /// Regex Check for a valid URL https://example.com
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <returns></returns>
         public static bool IsURL(TextBox txt)
         {
             bool isValid = true;
@@ -350,6 +380,11 @@ namespace ThreadedProject2
             return isValid;
         }
 
+        /// <summary>
+        /// Validate if there is an Item selected
+        /// </summary>
+        /// <param name="cbo"></param>
+        /// <returns></returns>
         public static bool ItemSelected(ComboBox cbo)
         {
             bool isValid = true;

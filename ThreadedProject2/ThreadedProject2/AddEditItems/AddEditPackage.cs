@@ -23,6 +23,10 @@ namespace ThreadedProject2
         private int id { get; set; } // package id for if editing package
         private bool isAdd { get; set; } // determines if adding a new package or editing a package
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="i"></param>
         public AddEditPackage(int i = -1)
         {
             InitializeComponent();
@@ -31,6 +35,11 @@ namespace ThreadedProject2
             isAdd = id == -1 ? true : false;
         }
 
+        /// <summary>
+        /// On Load Event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddEditPackage_Load(object sender, EventArgs e)
         {
             // if id is not -1, load package data to edit info
@@ -46,6 +55,11 @@ namespace ThreadedProject2
             }
         }
 
+        /// <summary>
+        /// Button Reset
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnReset_Click(object sender, EventArgs e)
         {
             clearTextboxes();
@@ -62,6 +76,11 @@ namespace ThreadedProject2
             txtPackagePrice.Text = "";
         }
 
+        /// <summary>
+        /// Button Accept
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAccept_Click(object sender, EventArgs e)
         {
             // if is and and data is valid, add a new package
@@ -100,7 +119,6 @@ namespace ThreadedProject2
                     package.PkgAgencyCommission = Math.Round(Decimal.Parse(txtAgencyComission.Text), 2);
 
                     context.Packages.Update(package);
-
                     
                     MessageBox.Show("Package updated");
                 }
@@ -113,6 +131,11 @@ namespace ThreadedProject2
             context.SaveChanges();
         }
 
+        /// <summary>
+        /// Button Exit
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -127,6 +150,7 @@ namespace ThreadedProject2
             Validation validation = new Validation();
             bool success = true;
 
+            //Validate all data
             try
             {
                 if (Validation.IsSentence(txtName) &&
@@ -140,6 +164,7 @@ namespace ThreadedProject2
                 }
                 else
                 {
+                    //Failed
                     success = false;
                 }
             }

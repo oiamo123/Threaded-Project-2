@@ -24,6 +24,11 @@ namespace ThreadedProject2
         private int lastId { get; set; } // Id for Supplier
         SupplierContact contact;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="lastId"></param>
+        /// <param name="id"></param>
         public AddEditSupplierContact(int lastId = 0, int id = 0)
         {
             InitializeComponent();
@@ -32,6 +37,11 @@ namespace ThreadedProject2
             this.lastId = lastId;
         }
 
+        /// <summary>
+        /// On Load Event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddEditSupplierContact_Load(object sender, EventArgs e)
         {
             // Change form text
@@ -137,6 +147,11 @@ namespace ThreadedProject2
             }
         }
 
+        /// <summary>
+        /// Button Accept
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAccept_Click(object sender, EventArgs e)
         {
             // check if data is valid
@@ -148,6 +163,7 @@ namespace ThreadedProject2
                 // if is add, create new contact and format strings else update supplier contact
                 if (isAdd)
                 {
+                    //Create a new contact
                     SupplierContact contact = new SupplierContact()
                     {
                         SupConFirstName = StringFormats.FormatString(txtSCFirstName.Text),
@@ -167,12 +183,13 @@ namespace ThreadedProject2
                         SupplierContactId = supplierContacts.OrderByDescending(sc => sc.SupplierContactId).First().SupplierContactId + 1
                     };
 
+                    //save to database
                     context.SupplierContacts.Add(contact);
-
                     context.SaveChanges();
 
                     MessageBox.Show($"Contact has been {(isAdd ? "added" : "edited")}");
                 }
+                //not isAdd
                 else
                 {
                     contact.SupConFirstName = StringFormats.FormatString(txtSCFirstName.Text);
@@ -198,6 +215,11 @@ namespace ThreadedProject2
             }
         }
 
+        /// <summary>
+        /// Button Reset
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnReset_Click(object sender, EventArgs e)
         {
             UpdateTextBoxes();

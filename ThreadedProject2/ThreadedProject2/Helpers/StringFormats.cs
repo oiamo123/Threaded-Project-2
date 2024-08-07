@@ -76,6 +76,11 @@ namespace ThreadedProject2
                 $"{($"{i.SupConAddress ??= ""} {i.SupConPostal ??= ""} {i.SupConCity ??= ""}").PadRight(50)}";
         }
 
+        /// <summary>
+        /// Format String To Uppercase First Letter
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         static public string FormatString(string str)
         {
             string str2 = "";
@@ -88,6 +93,11 @@ namespace ThreadedProject2
             return str2.Trim();
         }
 
+        /// <summary>
+        /// Format phone to correct format
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         static public string FormatPhone(string str)
         {
             string numbers = "";
